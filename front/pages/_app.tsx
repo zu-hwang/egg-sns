@@ -6,6 +6,8 @@ import GlobalStyle from '../src/styles/global-style';
 import Layout from '../src/layout';
 // 리덕스 랩퍼
 import wrapper from '../src/redux/configureStore';
+// 리덕스 사가 HOC
+import withReduxSaga from 'next-redux-saga';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -26,4 +28,5 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
 // 리덕스 랩퍼로 감싸서 내보내깅
 // <Provider store={store}></Provider> 사용하지 않는다!
-export default wrapper.withRedux(MyApp);
+// redux-saga 사용히 한번 더 감싸줘야함
+export default wrapper.withRedux(withReduxSaga(MyApp));
