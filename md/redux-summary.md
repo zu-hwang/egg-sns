@@ -1,5 +1,7 @@
 # redux
 
+> [next-redux-wrapper + typescript 사용 예제 코드](https://codesandbox.io/s/next-redux-wrapper-demo-7n2t5?file=/pages/_app.tsx:432-868) > [next-redux-wapper + typescipt + redux-saga 함께 사용하기](https://github.com/kirill-konshin/next-redux-wrapper#usage-with-redux-saga)
+
 ## duck style 작성법
 
 액션-타입, 액션-생성자-함수, 리듀서를 한곳에 작성
