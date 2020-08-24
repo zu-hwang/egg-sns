@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import { flexCenter, unit } from 'src/styles/theme';
 
 import heart from 'public/static/images/svg/heart.svg';
-import heartActive from 'public/static/images/svg/heart-active.svg';
+// import heartActive from 'public/static/images/svg/heart-active.svg';
 import comment from 'public/static/images/svg/comment.svg';
 import send from 'public/static/images/svg/send.svg';
 import bookmark from 'public/static/images/svg/bookmark.svg';
-import bookmarkActive from 'public/static/images/svg/bookmark-active.svg';
+// import bookmarkActive from 'public/static/images/svg/bookmark-active.svg';
 
 const ImageSlide = ({ feedImage }: { feedImage: Array<string> }) => {
   return (
     <>
-      {feedImage.map((image) => {
+      {feedImage.map((image, index) => {
         return (
-          <>
+          <div key={index}>
             {/* 여기에 슬라이드 구현 */}
             <Image src={image} />
             <Divider />
@@ -28,7 +28,7 @@ const ImageSlide = ({ feedImage }: { feedImage: Array<string> }) => {
                 <Icon src={bookmark} />
               </div>
             </IconBox>
-          </>
+          </div>
         );
       })}
     </>

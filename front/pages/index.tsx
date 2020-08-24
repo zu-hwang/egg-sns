@@ -1,17 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter } from 'src/styles/theme';
 // import SideBar from 'src/components/home/SideBar';
 import FeedCard from 'src/components/feedCard/FeedCard';
 import StorySlide from 'src/components/storyCard/StorySlide';
+import LoginUserInfo from 'src/components/sidebar/LoginUserInfo';
+import RecommandList from 'src/components/sidebar/RecommandList';
+import Footer from 'src/components/sidebar/Footer';
+import Layout from 'src/layout';
 import userImage from 'public/static/images/zuzu/zuzu.jpg';
 import imageSlide1 from 'public/static/images/zuzu/1.jpg';
-import imageSlide2 from 'public/static/images/zuzu/2.jpg';
+// import imageSlide2 from 'public/static/images/zuzu/2.jpg';
 
 // 메인화면 피드리스트 보여주기
-const userInfo = {
-  username: '____hi_world_',
-};
+// const userInfo = {
+//   id: 1,
+//   username: '____hi_world_',
+//   userImage: userImage,
+//   content: '.... 🕳',
+// };
 const feed = {
   id: 2,
   author: '____hi_world_',
@@ -40,22 +46,23 @@ const feed = {
 const feedList = [feed, feed, feed];
 const FeedList = ({}) => {
   return (
-    <Container>
-      <Main>
-        <StorySlide mode={'small'} />
-        <StorySlide mode={'large'} />
-        {/* <StoryCardL /> */}
-        {feedList.map((feed) => {
-          return <FeedCard feed={feed} />;
-        })}
-      </Main>
-      <Aside>
-        {/* <MyCard /> */}
-        {/* <RecommandList /> */}
-        {/* <SideBar /> */}
-        {/* <Footer /> */}
-      </Aside>
-    </Container>
+    <Layout>
+      <Container>
+        <Main>
+          <StorySlide mode={'small'} />
+          <StorySlide mode={'large'} />
+          {/* <StoryCardL /> */}
+          {feedList.map((feed, index) => {
+            return <FeedCard key={index} feed={feed} />;
+          })}
+        </Main>
+        <Aside>
+          <LoginUserInfo />
+          <RecommandList />
+          <Footer />
+        </Aside>
+      </Container>
+    </Layout>
   );
 };
 const Container = styled.div`
@@ -71,8 +78,9 @@ const Main = styled.section`
 
 const Aside = styled.aside`
   width: 320px;
-  /* border-left: 1px solid ${(props) => props.theme.border}; */
-  margin-left: 20px;
+  margin-left: 28px;
+  margin-top: 60px;
+  align-items: start;
+  color: ${(props) => props.theme.primaryText};
 `;
-
 export default FeedList;

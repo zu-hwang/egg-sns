@@ -1,21 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
-const UserNamebox = ({ username }: { username: string }) => {
+import { fontBold, font } from 'src/styles/theme';
+
+const UserNameBox = ({
+  username,
+  content,
+}: {
+  username: string;
+  content?: string;
+}) => {
   return (
     <Container>
-      <UserName>{username}</UserName>
-      {/* <UserName>{username}</UserName> */}
+      <Name>{username}</Name>
+      {content && <ContentOrHashTag>{content}</ContentOrHashTag>}
     </Container>
   );
 };
 
 const Container = styled.div`
   margin-left: 15px;
+  &:last-child {
+    font-weight: normal;
+  }
 `;
-const UserName = styled.p`
+const Name = styled.p`
   ${fontBold}
+  font-size :15px;
   color: ${(props) => props.theme.primaryText};
 `;
+const ContentOrHashTag = styled.p`
+  ${font}
+  font-size:12px;
+  font-weight: normal;
+  color: ${(props) => props.theme.midtoneText};
+  margin-top: 3px;
+`;
 
-export default UserNamebox;
+export default UserNameBox;

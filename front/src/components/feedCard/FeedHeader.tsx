@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import { flexCenter, unit } from 'src/styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
 import threedot from 'public/static/images/svg/threedot.svg';

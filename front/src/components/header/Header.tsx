@@ -19,7 +19,7 @@ const Container = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.border};
   width:100%;
   position:fixed;
-z-index: 1;
+z-index: 999;
   top:0;
   background-color:${(props) => props.theme.mainBackground}
 `;

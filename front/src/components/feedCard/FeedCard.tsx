@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
-
 import CommentInput from 'src/components/feedCard/CommentInput';
 import FeedHeader from 'src/components/feedCard/FeedHeader';
 import CommentListBox from 'src/components/feedCard/CommentListBox';

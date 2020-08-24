@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import { flexCenter, font, fontBold } from 'src/styles/theme';
 
 const CommentInput = () => {
   return (

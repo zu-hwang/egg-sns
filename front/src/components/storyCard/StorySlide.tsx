@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'src/styles/theme';
 
 import Small from 'src/components/storyCard/Small';
 import Large from 'src/components/storyCard/Large';
@@ -30,8 +30,12 @@ const StorySlide = ({ mode }) => {
       )}
       <MaskBox>
         <HorizonBox>
-          {friendList.map((friend) => {
-            return mode === 'small' ? <Small /> : <Large />;
+          {friendList.map((friend, index) => {
+            return mode === 'small' ? (
+              <Small key={index} />
+            ) : (
+              <Large key={index} />
+            );
           })}
         </HorizonBox>
       </MaskBox>
