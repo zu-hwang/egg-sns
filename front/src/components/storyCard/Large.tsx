@@ -1,7 +1,7 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import Avatar, { UserName } from 'src/components/ui/Avatar';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import styled from 'styled-components';
+import Avatar from 'src/components/ui/Avatar';
+import { flexCenter } from 'src/styles/theme';
 import SampleImage from 'public/static/images/zuzu/2.jpg';
 
 const Large = () => {
@@ -9,7 +9,7 @@ const Large = () => {
     <div>
       <ImageBox>
         <GradientBox>
-          <Avatar isLargeCard={true}>
+          <Avatar card={'large'}>
             <span>{'username'}</span>
           </Avatar>
         </GradientBox>

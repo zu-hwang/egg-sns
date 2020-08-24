@@ -6,6 +6,7 @@ import { flexCenter } from 'src/styles/theme';
 const Layout = ({ children }) => {
   return (
     <Container>
+      {/* 유저정보가 있으면 해더 보이기, 없으면 로그인 페이지 보이기 */}
       <Header />
       <CenterBox>{children}</CenterBox>
     </Container>
@@ -23,10 +24,10 @@ const Container = styled.div`
 const CenterBox = styled.div`
   width: ${(props) => props.theme.response.web + 'px'};
   ${flexCenter}
-  padding: 20px;
+  padding: 0 20px;
   justify-content: space-between;
-  border-right: 1px solid ${(props) => props.theme.border};
-  border-left: 1px solid ${(props) => props.theme.border};
+  /* border-right: 1px solid ${(props) => props.theme.border}; */
+  /* border-left: 1px solid ${(props) => props.theme.border}; */
   margin-top: 70px;
 `;
 

@@ -15,9 +15,9 @@ const CommentListBox = ({ author, content, comments, likes }) => {
           <MoreButton>더보기</MoreButton>
         </Author>
         <MoreButton>댓글 {likes}개 모두 보기</MoreButton>
-        {comments.map((comment) => {
+        {comments.map((comment, index) => {
           return (
-            <Comment>
+            <Comment key={index}>
               <div>
                 <span>{comment.author}</span>
                 <span>{comment.content}</span>
@@ -37,9 +37,6 @@ const CommentListBox = ({ author, content, comments, likes }) => {
 const ContentBox = styled.div`
   ${font}font-size: 14px;
   border-bottom: 1px solid ${(props) => props.theme.divider};
-`;
-const ButtonBox = styled.div`
-  height: 40px;
 `;
 const LikeCount = styled.p`
   ${fontBold}

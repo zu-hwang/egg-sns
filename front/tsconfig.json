@@ -1,21 +1,60 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    "baseUrl": ".",
+    "outDir": "build/dist",
     "module": "esnext",
+    "target": "es5",
+    "lib": ["es6", "dom", "esnext.asynciterable"],
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "preserve",
     "moduleResolution": "node",
+    "rootDir": ".",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "experimentalDecorators": true,
-    "baseUrl": "."
+    "noEmit": true,
+    "experimentalDecorators": true
   },
-  "include": ["next-env.d.ts", "costom.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest"
+  ],
+  "include": ["next-env.d.ts", "costom.d.ts", "**/*.ts", "**/*.tsx"]
 }
+// {
+//   "compilerOptions": {
+//     "target": "es5",
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "strict": false,
+//     "forceConsistentCasingInFileNames": true,
+//     "noEmit": true,
+//     "esModuleInterop": true,
+//     "module": "esnext",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "jsx": "preserve",
+//     "experimentalDecorators": true,
+//     "baseUrl": "."
+//   },
+//   "include": ["next-env.d.ts", "costom.d.ts", "**/*.ts", "**/*.tsx"],
+//   "exclude": ["node_modules"]
+// }
