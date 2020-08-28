@@ -31,17 +31,37 @@ const signUpValidater = ({
   phoneNumber = null,
 }) => {
   try {
+    // throw new Error('억지 에러를 발생시킴');
+    let result = {
+      contact: null,
+      fullName: null,
+      userName: null,
+      password: null,
+    };
     console.log('회원가입-유효성검사');
-    if (!fullNameValidator(fullName)) return 'fullName-Validation-failed';
-    if (!passwordValidator(password)) return 'password-Validation-failed';
     if (phoneNumber && !phoneNumberValidator(phoneNumber))
-      return 'phoneNumber-Validation-failed';
-    if (email && !emailValidator(email)) return 'email-Validation-failed';
-    if (!userNameValidator(userName)) return 'userName-Validation-failed';
-    return true;
+      result.contact = 'phoneNumberValidationFailed';
+
+    if (!phoneNumber && email && !emailValidator(email))
+      result.contact = 'emailValidationFailed';
+
+    if (!fullNameValidator(fullName))
+      result.fullName = 'fullNameValidationFailed';
+
+    if (!passwordValidator(password))
+      result.password = 'passwordValidationFailed';
+
+    if (!userNameValidator(userName))
+      result.userName = 'userNameValidationFailed';
+
+    console.log('회원가입-유효성검사-끝');
+    return Object.keys(result).filter((key) => result[key] !== null).length > 0
+      ? result
+      : null;
   } catch (error) {
+    console.log('회원가입-유효성검사-에러');
     console.log({ error });
-    return 'error';
+    return 'sign-up-validater-server-error';
   }
 };
 

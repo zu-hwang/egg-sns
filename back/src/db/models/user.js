@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      logOuted: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
     },
     {
       sequelize,
