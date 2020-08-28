@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
-import { flexCenter } from 'src/styles/theme';
+import { flexCenter } from 'styles/theme';
 import SampleImage from 'public/static/images/zuzu/2.jpg';
 
-const Large = () => {
+const Large: React.FC = () => {
   return (
     <div>
       <ImageBox>

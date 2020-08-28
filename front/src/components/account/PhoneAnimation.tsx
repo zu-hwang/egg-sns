@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import image from 'src/data/loginPageImageUrl';
 
-const PhoneAnimation = () => {
+const PhoneAnimation: React.FC = () => {
   return (
     <PhoneImage>
       <OverlayImage src={image.screen[0]} />

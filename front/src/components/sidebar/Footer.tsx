@@ -1,9 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font } from 'src/styles/theme';
+import { flexCenter, font } from 'styles/theme';
 import footerList from 'src/data/footerList';
 
-const Footer = ({ position = 'side' }: { position?: 'bottom' | 'side' }) => {
+interface FooterProps {
+  position?: 'bottom' | 'side';
+}
+const Footer: React.FC<FooterProps> = ({ position = 'side' }) => {
   return (
     <FooterNav position={position}>
       <Ul position={position}>
@@ -68,7 +71,7 @@ const Li = styled.li`
   ${({ theme, position }: { theme: any; position: string }): string => {
     if (position === 'bottom') {
       return `
-        margin-top: 5px;
+      margin-top: 5px;
         margin-right:15px;
         font-size: 13px;
         font-weight: 500;
@@ -77,7 +80,6 @@ const Li = styled.li`
     } else {
       return `
         display: inline-block;
-        margin-top: 5px;
         font-size: 11px;
         font-weight: normal;
         color: ${theme.disable};

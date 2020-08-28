@@ -1,4 +1,9 @@
-const footerList: Array<{ id: number; name: string; url: string }> = [
+interface IfooterListItem {
+  id: number;
+  name: string;
+  url: string;
+}
+const footerList: Array<IfooterListItem> = [
   {
     id: 1,
     name: '소개',

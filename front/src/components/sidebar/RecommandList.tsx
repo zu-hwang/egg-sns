@@ -1,12 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
 
 const UserList = [{}, {}, {}, {}, {}];
 
-const RecommandList = () => {
+const RecommandList: React.FC = () => {
   return (
     <Container>
       <Header>

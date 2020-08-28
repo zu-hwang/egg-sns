@@ -1,9 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold, unit, col, gutter } from 'src/styles/theme';
+import { flexCenter, fontBold, unit, col, gutter } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import settingIcon from 'public/static/images/2x/setting.png';
-const Profile = ({ user, feedCount, followerCount, followCount }) => {
+
+interface ProfileProps {
+  user: any; // 타입지정 다시하기
+  feedCount: number;
+  followerCount: number;
+  followCount: number;
+}
+const Profile: React.FC<ProfileProps> = ({
+  user,
+  feedCount,
+  followerCount,
+  followCount,
+}) => {
   return (
     <Container>
       <Avatar size={'large'} url={user.imageUrl} />

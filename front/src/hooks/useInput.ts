@@ -6,7 +6,7 @@ const useInput = (
 ): [string, (e: any) => void, Dispatch<SetStateAction<string>>] => {
   const [value, setValue] = useState(initValue);
   const handler = useCallback((e: any) => {
-    console.log('useInput', e.target.value);
+    // console.log('useInput', e.target.value);
     setValue(e.target.value);
   }, []);
   return [value, handler, setValue];

@@ -1,16 +1,17 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 
-const IconSprite = ({
-  url,
-  position,
-  iconSize,
-  imageSize,
-}: {
+interface IconSpriteProps {
   url: string;
   position: Array<number>;
   iconSize: Array<number>;
   imageSize: Array<number>;
+}
+const IconSprite: React.FC<IconSpriteProps> = ({
+  url,
+  position,
+  iconSize,
+  imageSize,
 }) => {
   return (
     <Container>

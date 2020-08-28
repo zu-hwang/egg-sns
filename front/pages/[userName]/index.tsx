@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { col, gutter } from 'src/styles/theme';
+import { col, gutter } from 'styles/theme';
 import Layout from 'src/layout';
 import Profile from 'src/components/myPage/Profile';
 import TabMenu from 'src/components/myPage/TabMenu';
@@ -25,10 +26,15 @@ const data = {
   followCount: 1234,
 };
 const MyFeed = ({}) => {
+  // 동적라우팅에 사용
+  const router = useRouter();
+  const { userName } = router.query;
+
   const [tabSelected] = useState('feed');
   return (
     <Layout>
       <Container>
+        <p>이 페이지는 : {userName} 님의 피드</p>
         <Profile
           user={data.userInfo}
           feedCount={data.feed.length}

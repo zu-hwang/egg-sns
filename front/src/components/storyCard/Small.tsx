@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
-import { flexCenter } from 'src/styles/theme';
+import { flexCenter } from 'styles/theme';
 
-const Small = () => {
+const Small: React.FC = () => {
   return (
     <Container>
       <Avatar>

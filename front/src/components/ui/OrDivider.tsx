@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'styles/theme';
 
-const OrDivider = () => {
+const OrDivider: React.FC = () => {
   return (
     <Devider>
       <div></div>

@@ -1,23 +1,28 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, col, fontBold } from 'src/styles/theme';
+import { flexCenter, col, fontBold } from 'styles/theme';
 import IconSprite from 'src/components/ui/IconSprite';
 // import zuzuImage from 'public/static/images/zuzu/4.jpg';
 import image from 'src/data/feedImageUrl';
 // import feedImageUrl from 'src/data/feedImageUrl';
 
-const Feed = ({ data, likes, comments }) => {
-  console.log({ data });
-  console.log(data[0].category);
+interface FeedProps {
+  data: any; // 다시 설정하기
+  likes: number;
+  comments: any; // 다시설정하기
+}
+const Feed: React.FC<FeedProps> = ({ data, likes, comments }) => {
+  // console.log({ data });
+  // console.log(data[0].category);
   return (
     <Container>
       <FeedBox>
         {data.length > 0 &&
           data
             .filter((_, index) => index < 1)
-            .map((item) => {
+            .map((item, index) => {
               return (
-                <>
+                <div key={index}>
                   <HoverData>
                     <p>
                       <IconSprite
@@ -56,7 +61,7 @@ const Feed = ({ data, likes, comments }) => {
                       />
                     )}
                   </ImageBox>
-                </>
+                </div>
               );
             })}
       </FeedBox>

@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold } from 'src/styles/theme';
+import { flexCenter, font, fontBold } from 'styles/theme';
 
-const CommentInput = () => {
+const CommentInput: React.FC = () => {
   return (
     <Container>
       <Input placeholder={'댓글 달기...'} required></Input>

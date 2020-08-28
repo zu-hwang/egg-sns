@@ -1,10 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'src/styles/theme';
+import { flexCenter, font, fontBold, unit } from 'styles/theme';
 
 import heart from 'public/static/images/svg/heart.svg';
 
-const CommentListBox = ({ author, content, comments, likes }) => {
+interface CommentListBoxProps {
+  author: string;
+  content: string;
+  comments: any; // 코멘트 타입 설정 다시하기
+  likes: number;
+}
+const CommentListBox: React.FC<CommentListBoxProps> = ({
+  author,
+  content,
+  comments,
+  likes,
+}) => {
   return (
     <ContentBox>
       <LikeCount>좋아요 22개</LikeCount>
