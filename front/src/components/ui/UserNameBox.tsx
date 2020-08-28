@@ -1,14 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { fontBold, font } from 'src/styles/theme';
+import { fontBold, font } from 'styles/theme';
 
-const UserNameBox = ({
-  username,
-  content,
-}: {
+interface UserNameBoxProps {
   username: string;
   content?: string;
-}) => {
+}
+const UserNameBox: React.FC<UserNameBoxProps> = ({ username, content }) => {
   return (
     <Container>
       <Name>{username}</Name>

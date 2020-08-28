@@ -1,10 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'styles/theme';
 import IconSprite from 'src/components/ui/IconSprite';
 import image from 'src/data/loginPageImageUrl';
 // background-position: -347px -329px;
-const TabMenu = () => {
+
+const TabMenu: React.FC = () => {
   // 탭메뉴를 state로 관리해야 하나...?
   return (
     <LocalNav>

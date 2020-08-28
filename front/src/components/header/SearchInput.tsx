@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, unit, font } from 'src/styles/theme';
+import { flexCenter, unit, font } from 'styles/theme';
 import search from 'public/static/images/svg/search2.svg';
 
-const SearchInput = () => {
+const SearchInput: React.FC = () => {
   return (
     <Container>
       <Label htmlFor='searchInput'>

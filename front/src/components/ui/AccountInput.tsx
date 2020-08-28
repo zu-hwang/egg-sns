@@ -1,81 +1,92 @@
-import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
+import * as React from 'react';
+import { useState, useCallback } from 'react';
 import { CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import { checkInput } from 'src/util/InputValid';
-import { fontBold } from 'src/styles/theme';
+import { checkInput } from 'src/util/inputValidation';
+import { flexCenter, fontBold } from 'styles/theme';
+import styled from 'styled-components';
 
 export type ForID =
   | 'user-otherContact'
-  | 'user-fullname'
+  | 'user-fullName'
   | 'user-name'
   | 'user-password';
-
-const AccountInput = ({
-  forId,
-  value,
-  label,
-  type = 'text',
-  onChangeValue,
-  validIconOnOff = false,
-}: {
+interface AccountInputProps {
   forId: ForID;
   value: string;
   label?: string;
   type?: string;
   validIconOnOff?: boolean;
+  message?: string | null;
   onChangeValue: (e: any) => void;
-}) => {
+}
+
+const AccountInput: React.FC<AccountInputProps> = (props) => {
+  const { forId, value, label, type, message } = props;
+  const { validIconOnOff, onChangeValue } = props;
   const [active, setActive] = useState(false);
   const [reType, setReType] = useState(type);
   const TogglePasswordVisible = useCallback(() => {
-    if (reType === 'password') {
-      setReType('text');
-    } else if (reType === 'text') {
-      setReType('password');
-    }
+    if (reType === 'password') setReType('text');
+    if (reType === 'text') setReType('password');
   }, [reType]);
   const handleOnFocus = useCallback(() => {
     setActive(true);
   }, []);
   const handleOnBlur = useCallback(() => {
-    // console.log({ value });
     if (value.length === 0) {
       setActive(false);
     }
   }, [value]);
+  const printValidIcon = (): boolean => {
+    if (!checkInput(value, forId)) return true;
+    if (message && !checkInput(value, forId)) return true;
+    if (message) return true;
+    console.log({ value, forId }, checkInput(value, forId));
+    return false;
+  };
   return (
-    <Box>
-      <RightBox>
-        {validIconOnOff ? (
-          checkInput(value, forId) ? (
-            <ValidPass />
-          ) : (
-            <ValidError />
-          )
-        ) : null}
-        {type === 'password' && value.length > 0 && (
-          <VisiblePasswordBtn onClick={TogglePasswordVisible}>
-            {reType === 'password' ? '비밀번호 표시' : '숨기기'}
-          </VisiblePasswordBtn>
+    <>
+      <Box>
+        <RightBox>
+          {validIconOnOff &&
+            (printValidIcon() ? <ValidError /> : <ValidPass />)}
+          {/* {validIconOnOff ? (
+            printValidIcon() ? (
+              <ValidError />
+            ) : (
+              
+            )
+          ) : null} */}
+          {type === 'password' && value.length > 0 && (
+            <VisiblePasswordBtn onClick={TogglePasswordVisible}>
+              {reType === 'password' ? '비밀번호 표시' : '숨기기'}
+            </VisiblePasswordBtn>
+          )}
+        </RightBox>
+        <Input
+          type={reType}
+          id={forId}
+          name={forId}
+          value={value}
+          onChange={onChangeValue}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          isActive={active}
+        />
+        {label && (
+          <Label isActive={active} htmlFor={forId}>
+            {label}
+          </Label>
         )}
-      </RightBox>
-      <Input
-        type={reType}
-        id={forId}
-        name={forId}
-        value={value}
-        onChange={onChangeValue}
-        onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
-        isActive={active}
-      />
-      {label && (
-        <Label isActive={active} htmlFor={forId}>
-          {label}
-        </Label>
-      )}
-    </Box>
+      </Box>
+      {message && <ErrorMessage>{message}</ErrorMessage>}
+    </>
   );
+};
+AccountInput.defaultProps = {
+  type: 'text',
+  validIconOnOff: false,
+  message: null,
 };
 
 const Box = styled.div`
@@ -142,5 +153,12 @@ const ValidError = styled(CloseCircleOutlined)`
 `;
 const ValidPass = styled(CheckCircleOutlined)`
   color: ${({ theme }) => theme.disable};
+`;
+
+const ErrorMessage = styled.div`
+  ${flexCenter}
+  font-size:12px;
+  color: ${({ theme }) => theme.red};
+  margin-bottom: 10px;
 `;
 export default AccountInput;

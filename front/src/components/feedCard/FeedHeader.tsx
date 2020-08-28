@@ -1,11 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, unit } from 'src/styles/theme';
+import { flexCenter, unit } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
 import threedot from 'public/static/images/svg/threedot.svg';
 
-const FeedHeader = ({ author, authorImage }) => {
+interface FeedHeaderProps {
+  author: string;
+  authorImage: string;
+}
+
+const FeedHeader: React.FC<FeedHeaderProps> = ({ author, authorImage }) => {
   return (
     <UserInfoBox>
       <div>

@@ -1,20 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'styles/theme';
 import defaultAvatarImage from 'public/static/images/zuzu/zuzu.jpg';
 
 // ! 스토리 있을때 아바타에 빨간 줄 긋기
 type Size = 'medium' | 'large' | 'small';
-const Avatar = ({
-  card = 'small',
-  children,
-  size = 'medium',
-  url = defaultAvatarImage,
-}: {
+interface AvatarProps {
   children?: any;
   card?: 'small' | 'large';
   size?: Size;
   url?: string;
+}
+const Avatar: React.FC<AvatarProps> = ({
+  card = 'small',
+  children,
+  size = 'medium',
+  url = defaultAvatarImage,
 }) => {
   // console.log({ size, url });
   return (

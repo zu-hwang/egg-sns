@@ -1,8 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { unit } from 'src/styles/theme';
+import { unit } from 'styles/theme';
 
-const Icon = ({ url }) => {
+interface IconProps {
+  url: string;
+}
+
+const Icon: React.FC<IconProps> = ({ url }) => {
   return <Image src={url} />;
 };
 

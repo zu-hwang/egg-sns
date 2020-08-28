@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter } from 'src/styles/theme';
+import { flexCenter } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
 import userImage from 'public/static/images/zuzu/zuzu.jpg';
@@ -12,7 +12,7 @@ const userInfo = {
   userImage: userImage,
   content: '.... 🕳',
 };
-const LoginUserInfo = ({}) => {
+const LoginUserInfo: React.FC = ({}) => {
   return (
     <Container>
       <Avatar url={userInfo.userImage} />

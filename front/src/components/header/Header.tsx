@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import GBN from './GBN';
-import { flexCenter } from '../../styles/theme';
+import { flexCenter } from 'styles/theme';
 
-const Header = ({}) => {
+const Header: React.FC = ({}) => {
   return (
     <Container>
       <CenterBox>

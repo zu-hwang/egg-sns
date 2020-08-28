@@ -1,12 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, unit } from '../../styles/theme';
+import { flexCenter, unit } from 'styles/theme';
 import SearchInput from 'src/components/header/SearchInput';
 import Nav from 'src/components/header/Nav';
 import logo from 'public/static/images/svg/logo.svg';
 import logoText from 'public/static/images/svg/logo-text.svg';
 
-const GBN = () => {
+const GBN: React.FC = () => {
   return (
     <Container>
       <LogoBox>

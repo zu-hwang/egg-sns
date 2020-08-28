@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
+import { flexCenter, fontBold } from 'styles/theme';
 
 import Small from 'src/components/storyCard/Small';
 import Large from 'src/components/storyCard/Large';
@@ -19,7 +19,11 @@ const friendList = [
   friend,
   friend,
 ];
-const StorySlide = ({ mode }) => {
+
+interface StorySlideProps {
+  mode: 'large' | 'small';
+}
+const StorySlide: React.FC<StorySlideProps> = ({ mode }) => {
   return (
     <Container>
       {mode === 'large' && (

@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, gutter } from 'src/styles/theme';
+import { flexCenter, gutter } from 'styles/theme';
 // import image from 'src/data/feedImageUrl';
 import Feed from 'src/components/myPage/Feed';
 // import feedImageUrl from 'src/data/feedImageUrl';
@@ -45,7 +45,8 @@ const myFeedList = [
     comments: 389,
   },
 ];
-const FeedBoard = () => {
+
+const FeedBoard: React.FC = () => {
   return (
     <Board>
       {myFeedList.map((feed, index) => {

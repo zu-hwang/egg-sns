@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter } from 'src/styles/theme';
+import { flexCenter } from 'styles/theme';
 import image from 'src/data/loginPageImageUrl';
 
-const AppDownloadLinkBox = () => {
+const AppDownloadLinkBox: React.FC = () => {
   return (
     <AppDownloadLink>
       <p>앱을 다운로드하세요.</p>

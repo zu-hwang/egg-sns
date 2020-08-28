@@ -1,42 +1,66 @@
-import React, { useState, useCallback } from 'react';
-import useInput from 'hooks/useInput';
-import styled from 'styled-components';
-import { flexCenter, fontBold } from 'src/styles/theme';
-import { checkSignUpInputValid } from 'src/util/InputValid';
-import logoText from 'public/static/images/svg/logo-text.svg';
-import image from 'src/data/loginPageImageUrl';
+import * as React from 'react';
+import { useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from 'src/hooks/useInput';
 import OrDivider from 'src/components/ui/OrDivider';
 import BlueBtn from 'src/components/ui/BlueBtn';
 import AccountInput from 'src/components/ui/AccountInput';
+import {
+  checkSignUpInputValid,
+  seperateContact,
+} from 'src/util/inputValidation';
+import * as actions from 'store';
+import styled from 'styled-components';
+import { flexCenter, fontBold } from 'styles/theme';
+import logoText from 'public/static/images/svg/logo-text.svg';
+import image from 'src/data/loginPageImageUrl';
 
-const SignUpForm = () => {
+import { SignUpError } from 'store/account/state';
+import errorMessageMap from 'src/util/errorMessage';
+
+const SignUpForm: React.FC = () => {
+  const dispatch = useDispatch();
+  const signUpError: SignUpError | null = useSelector(
+    (state: actions.RootState) => state.account.signUpError,
+  );
   const [validIconOnOff, setValidIconOnOff] = useState(false);
   const [otherContact, onChangeOtherContact] = useInput('');
-  const [fullname, onChangeFullname] = useInput('');
-  const [username, onChangeUsername] = useInput('');
+  const [fullName, onChangeFullName] = useInput('');
+  const [userName, onChangeUserName] = useInput('');
   const [password, onChangePassword] = useInput('');
   const onClickSubmit = useCallback(
     (e) => {
-      // ! 버튼클릭
-      // ! 인풋 유효성 검사
       setValidIconOnOff(true);
-      checkSignUpInputValid(otherContact, fullname, username, password);
-      // ! 유효성 검사 문제 없을 > 서버에 요청
-      // ? 서버응답
-      // ? 1. 고유값 중복 : 아이디/핸드폰번호/이메일 다시 작성
-      // ? 2. 비밀번호 유효성 에러
-      // ? 3. 500 서버에러
-      // ! 유효성 검사 문제 있음 > 에러 state true 설정
-      // ? error 상태값에 따라 화면 랜더링 > ErrorComponent 출력
+      if (checkSignUpInputValid(otherContact, fullName, userName, password)) {
+        // 인풋 유효 검사 문제없으면 회원가입 요청
+        const contactKeyName = seperateContact(otherContact);
+        const requestBodyData = {
+          userName,
+          password,
+          fullName,
+          [contactKeyName]: otherContact,
+        };
+        console.log('클릭 이벤트', { requestBodyData });
+        dispatch(actions.requestSignUp(requestBodyData));
+      }
     },
-    [otherContact, fullname, username, password],
+    [otherContact, fullName, userName, password],
   );
-  // const onKeypressEnter = useCallback((e) => {}, []);
   const checkInputValid = useCallback((): boolean => {
-    return !checkSignUpInputValid(otherContact, fullname, username, password);
-  }, [otherContact, fullname, username, password]);
+    return !checkSignUpInputValid(otherContact, fullName, userName, password);
+  }, [otherContact, fullName, userName, password]);
 
-  console.log('렌더:', { otherContact, fullname, username, password });
+  type KeyName = 'contact' | 'fullName' | 'userName' | 'password';
+  const Error400PrintMessage = (keyName: KeyName): string | null => {
+    if (
+      signUpError !== null &&
+      signUpError.code === 400 &&
+      signUpError.message !== null
+    ) {
+      return errorMessageMap[signUpError.message[keyName]];
+    }
+    return null;
+  };
   return (
     <Container>
       <FirstBox>
@@ -53,20 +77,23 @@ const SignUpForm = () => {
             value={otherContact}
             onChangeValue={onChangeOtherContact}
             validIconOnOff={validIconOnOff}
+            message={Error400PrintMessage('contact')}
           />
           <AccountInput
-            forId={'user-fullname'}
+            forId={'user-fullName'}
             label={'성명'}
-            value={fullname}
-            onChangeValue={onChangeFullname}
+            value={fullName}
+            onChangeValue={onChangeFullName}
             validIconOnOff={validIconOnOff}
+            message={Error400PrintMessage('fullName')}
           />
           <AccountInput
             forId={'user-name'}
             label={'사용자 이름'}
-            value={username}
-            onChangeValue={onChangeUsername}
+            value={userName}
+            onChangeValue={onChangeUserName}
             validIconOnOff={validIconOnOff}
+            message={Error400PrintMessage('userName')}
           />
           <AccountInput
             type={'password'}
@@ -75,6 +102,7 @@ const SignUpForm = () => {
             value={password}
             onChangeValue={onChangePassword}
             validIconOnOff={validIconOnOff}
+            message={Error400PrintMessage('password')}
           />
           <BlueBtn disabled={checkInputValid()} onClick={onClickSubmit}>
             가입
@@ -136,4 +164,5 @@ const Icon = styled.div`
   height: 16px;
   margin-right: 10px;
 `;
+
 export default SignUpForm;

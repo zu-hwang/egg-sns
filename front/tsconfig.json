@@ -35,7 +35,8 @@
     "webpack",
     "jest"
   ],
-  "include": ["next-env.d.ts", "costom.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "costom.d.ts", "**/*.ts", "**/*.tsx"],
+  "typeRoots": ["store/types.d.ts"]
 }
 // {
 //   "compilerOptions": {
