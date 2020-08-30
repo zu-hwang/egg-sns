@@ -1,22 +1,20 @@
 import * as React from 'react';
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
-import wapper from 'store';
-import API from 'src/util/api';
-import * as types from 'store/types';
+import * as next from 'next';
+import * as route from 'next/router';
+import * as redux from 'src/hooks/customRedux';
+import * as saga from 'redux-saga';
+import * as store from 'store';
 import * as account from 'store/account/';
+import API from 'src/util/api';
 
 import Login from 'src/components/account/Login';
 import Footer from 'src/components/sidebar/Footer';
-import OneTap from 'src/components/account/OneTap';
 import FeedCard from 'src/components/feedCard/FeedCard';
 import StorySlide from 'src/components/storyCard/StorySlide';
 import LoginUserInfo from 'src/components/sidebar/LoginUserInfo';
 import RecommandList from 'src/components/sidebar/RecommandList';
-import AccountLayout from 'src/layout/AccountLayout';
 import Layout from 'src/layout';
+import AccountLayout from 'src/layout/AccountLayout';
 
 import styled from 'styled-components';
 import userImage from 'public/static/images/zuzu/zuzu.jpg';
@@ -48,25 +46,20 @@ const feed = {
   ],
 };
 const feedList = [feed, feed, feed];
-interface FeedListProps {
-  noCookie: boolean;
-}
-const FeedList: React.FC<FeedListProps> = ({ noCookie }) => {
-  const router = useRouter();
-  const logInSuccess = useSelector(
-    (state: types.StoreState) => state.account.logInSuccess,
-  );
-  const user = useSelector((state: types.StoreState) => state.account.user);
+
+const FeedList: React.FC = () => {
+  const router = route.useRouter();
+  const logInSuccess = redux.useSelector((state) => state.account.logInSuccess);
+  const user = redux.useSelector((state) => state.account.user);
+  React.useEffect(() => {
+    logInSuccess && user && router.push('account/onetap');
+  }, [logInSuccess, user]);
+
   return (
     <>
-      {user === null && (
+      {!user && (
         <AccountLayout>
           <Login />
-        </AccountLayout>
-      )}
-      {user && logInSuccess && (
-        <AccountLayout>
-          <OneTap />
         </AccountLayout>
       )}
       {!logInSuccess && user !== null && (
@@ -110,18 +103,19 @@ const Aside = styled.aside`
   color: ${(props) => props.theme.primaryText};
 `;
 
-//! Next에서 redux를 사용할때 getXXXProps에서 문제가 생김 그러므로, next-redux-wapper를 사용하여  getXXXProps를 사용.. 한다함.. 음
-export const getServerSideProps: GetServerSideProps = wapper.getServerSideProps(
+//! Next에서 redux를 사용할때 getXXXProps에서 문제가 생김 그러므로, next-redux-wrapper를 사용하여  getXXXProps를 사용.. 한다함.. 음
+export const getServerSideProps: next.GetServerSideProps = store.wrapper.getServerSideProps(
   async (context) => {
     try {
       console.log('메인 페이지 입니다');
-      const cookie = context.req ? context.req.headers.cookie : '';
+      // const cookie = context.req ? context.req.headers.cookie : '';
+      const cookie = context.req.headers.cookie || '';
       if (context.req && cookie) API.defaults.headers.Cookie = cookie;
       context.store.dispatch(account.requestUserData());
-      context.store.dispatch(END);
+      context.store.dispatch(saga.END);
       await context.store.sagaTask.toPromise();
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   },
 );

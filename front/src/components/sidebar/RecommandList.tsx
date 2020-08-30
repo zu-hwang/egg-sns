@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
 
@@ -35,21 +35,21 @@ const RecommandList: React.FC = () => {
 
 const Container = styled.section`
   width: 100%;
-  ${flexCenter};
+  ${css.flexCenter};
   flex-direction: column;
 `;
 const Header = styled.header`
   width: 100%;
   margin-bottom: 12px;
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   span {
-    ${fontBold}
+    ${css.fontBold}
     font-size: 14px;
     color: ${({ theme }) => theme.secondaryText};
   }
   button {
-    ${fontBold}
+    ${css.fontBold}
     font-size: 14px;
     border: none;
     background: transparent;
@@ -61,7 +61,7 @@ const List = styled.ul`
   width: 100%;
 `;
 const Li = styled.li`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content: space-between;
   margin: 12px 0;
   div:first-child {
@@ -87,7 +87,7 @@ const FollowBtn = styled.button`
   padding: 0;
   text-align: right;
   background: transparent;
-  ${fontBold}
+  ${css.fontBold}
   font-size:12px;
   color: ${({ theme }) => theme.blue};
 `;

@@ -1,10 +1,8 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, col, fontBold } from 'styles/theme';
-import IconSprite from 'src/components/ui/IconSprite';
-// import zuzuImage from 'public/static/images/zuzu/4.jpg';
 import image from 'src/data/feedImageUrl';
-// import feedImageUrl from 'src/data/feedImageUrl';
+import IconSprite from 'src/components/ui/IconSprite';
 
 interface FeedProps {
   data: any; // 다시 설정하기
@@ -70,11 +68,10 @@ const Feed: React.FC<FeedProps> = ({ data, likes, comments }) => {
 };
 const Container = styled.div`
   width: 100%;
-  width: ${col + 'px'};
-  height: ${col + 'px'};
+  width: ${css.col + 'px'};
+  height: ${css.col + 'px'};
 `;
 const FeedBox = styled.div`
-  /* ${flexCenter} */
   width: 100%;
   position: relative;
 `;
@@ -85,8 +82,8 @@ const ImageBox = styled.div<{ url: string }>`
   position: relative;
   top: 0;
   right: 0;
-  width: ${col + 'px'};
-  height: ${col + 'px'};
+  width: ${css.col + 'px'};
+  height: ${css.col + 'px'};
   &:hover {
     filter: brightness(80%);
   }
@@ -104,13 +101,13 @@ const HoverData = styled.div`
   width: 100%;
   height: 100%;
   opacity: 0;
-  ${flexCenter}
+  ${css.flexCenter}
   p {
-    ${flexCenter}
+    ${css.flexCenter}
     flex-direction:row;
   }
   p > span {
-    ${fontBold}
+    ${css.fontBold}
     margin-right:20px;
     color: ${({ theme }) => theme.mainBackground};
   }

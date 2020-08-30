@@ -1,7 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold, unit } from 'styles/theme';
-
 import heart from 'public/static/images/svg/heart.svg';
 
 interface CommentListBoxProps {
@@ -46,11 +45,11 @@ const CommentListBox: React.FC<CommentListBoxProps> = ({
 };
 
 const ContentBox = styled.div`
-  ${font}font-size: 14px;
+  ${css.font}font-size: 14px;
   border-bottom: 1px solid ${(props) => props.theme.divider};
 `;
 const LikeCount = styled.p`
-  ${fontBold}
+  ${css.fontBold}
   font-size: 14px;
   font-weight: 500;
   padding: 5px 16px;
@@ -59,13 +58,13 @@ const CommentBox = styled.div``;
 const Author = styled.div`
   padding: 5px 16px;
   span:first-child {
-    ${fontBold}
+    ${css.fontBold}
     font-size:15px;
     margin-right: 5px;
   }
 `;
 const MoreButton = styled.button`
-  ${font}
+  ${css.font}
   font-size: 14px;
   /* padding: 5px 16px; */
   border: none;
@@ -75,27 +74,27 @@ const MoreButton = styled.button`
 `;
 const Comment = styled.div`
   padding: 5px 16px;
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   div {
-    ${flexCenter}
+    ${css.flexCenter}
     span:first-child {
-      ${fontBold}
+      ${css.fontBold}
       font-size:15px;
       margin-right: 5px;
     }
   }
 `;
 const LatestTimer = styled.p`
-  ${font}
+  ${css.font}
   font-size: 10px;
   padding: 5px 16px;
   color: ${(props) => props.theme.secondaryText};
 `;
 
 const Icon = styled.img`
-  height: ${3 * unit + 'px'};
-  width: ${3 * unit + 'px'};
+  height: ${3 * css.unit + 'px'};
+  width: ${3 * css.unit + 'px'};
   margin-right: 25px;
   &:last-child {
     margin-right: 0;

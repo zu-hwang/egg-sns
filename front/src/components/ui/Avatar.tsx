@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
 import defaultAvatarImage from 'public/static/images/zuzu/zuzu.jpg';
 
 // ! 스토리 있을때 아바타에 빨간 줄 긋기
@@ -28,17 +28,17 @@ const Avatar: React.FC<AvatarProps> = ({
   );
 };
 const Div = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
 `;
 const Container = styled.div<{ size: Size }>`
-  ${flexCenter}
+  ${css.flexCenter}
   width: ${({ size }) =>
     size === 'large' ? '158px' : size === 'small' ? '40px' : '62px'};
   height: ${({ size }) =>
     size === 'large' ? '158px' : size === 'small' ? '40px' : '62px'};
-    border: 2px solid tomato;
-    border-radius:50%;
+  border: 2px solid tomato;
+  border-radius: 50%;
 `;
 
 const UserImage = styled.img<{ size: Size }>`
@@ -52,7 +52,7 @@ const UserImage = styled.img<{ size: Size }>`
 
 export const UserName = styled.p<{ mode?: 'large' | 'small' }>`
   margin-top: 6px;
-  ${fontBold}
+  ${css.fontBold}
   font-size: 14px;
   text-align: center;
   color: ${(props) =>

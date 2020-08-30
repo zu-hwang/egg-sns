@@ -1,9 +1,9 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, unit } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
-import UserNameBox from 'src/components/ui/UserNameBox';
 import threedot from 'public/static/images/svg/threedot.svg';
+import UserNameBox from 'src/components/ui/UserNameBox';
 
 interface FeedHeaderProps {
   author: string;
@@ -26,16 +26,15 @@ const FeedHeader: React.FC<FeedHeaderProps> = ({ author, authorImage }) => {
 
 const UserInfoBox = styled.div`
   padding: 10px 16px;
-
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   div {
-    ${flexCenter}
+    ${css.flexCenter}
   }
 `;
 const ThreeDotIcon = styled.img`
-  height: ${4 * unit + 'px'};
-  width: ${4 * unit + 'px'};
+  height: ${4 * css.unit + 'px'};
+  width: ${4 * css.unit + 'px'};
   margin-right: 25px;
   &:last-child {
     margin-right: 0;

@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter } from 'styles/theme';
 import image from 'src/data/loginPageImageUrl';
 
 const AppDownloadLinkBox: React.FC = () => {
@@ -15,7 +15,7 @@ const AppDownloadLinkBox: React.FC = () => {
   );
 };
 const AppDownloadLink = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   margin: 25px 0 0;
   p {

@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
 
 interface BlueButtonProps {
   children: any;
@@ -13,7 +13,7 @@ const BlueButton: React.FC<BlueButtonProps> = ({
   children,
   name,
   disabled = false,
-  onClick,
+  onClick = () => {},
   invert = false,
 }) => {
   return (
@@ -31,13 +31,14 @@ const Button = styled.button.attrs(({ disabled }) => ({
   padding: 6px;
   margin-top: 8px;
   width: 100%;
+  height: 32px;
   border-radius: 4px;
-  ${fontBold}
+  ${css.fontBold}
   font-size: 14px;
   color: ${({ theme, invert }) => (invert ? theme.blue : theme.mainBackground)};
   background-color: ${({ theme, invert }) =>
     invert ? theme.mainBackground : theme.blue};
-  ${flexCenter}
+  ${css.flexCenter}
   & > div {
     ${({ name }) =>
       name === 'facebook' && `background-position: -364px -329px;`}

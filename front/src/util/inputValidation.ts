@@ -1,31 +1,12 @@
+import * as rules from 'src/util/regex';
 import { ForID } from 'src/components/ui/AccountInput';
-import {
-  emailRule,
-  phoneNumberRule,
-  fullNameRule,
-  userNameRule,
-  passwordRule,
-} from 'src/util/regex';
 
-export const checkSignUpInputValid = (
-  otherContact: string,
-  fullName: string,
-  userName: string,
-  password: string,
-): boolean => {
-  if (
-    (emailRule.test(otherContact) || phoneNumberRule.test(otherContact)) &&
-    fullNameRule.test(fullName) &&
-    userNameRule.test(userName) &&
-    passwordRule.test(password)
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-export type KeyName = 'userName' | 'email' | 'phoneNumber';
+export type KeyName =
+  | 'userName'
+  | 'email'
+  | 'phoneNumber'
+  | 'contact'
+  | 'userId';
 export interface ReturnCheckLoginInputValid {
   result: boolean;
   keyName?: KeyName;
@@ -35,32 +16,83 @@ export const checkLoginInputValid = (
   password: string,
 ): ReturnCheckLoginInputValid => {
   // password 입력 확인
-  if (passwordRule.test(password)) {
-    if (userNameRule.test(userId)) return { result: true, keyName: 'userName' };
-    if (emailRule.test(userId)) return { result: true, keyName: 'email' };
-    if (phoneNumberRule.test(userId))
-      return { result: true, keyName: 'phoneNumber' };
-    return { result: false };
+  if (rules.password.test(password)) {
+    checkLoginContactMode(userId);
+    // if (rules.userName.test(userId)) return { result: true, keyName: 'userName' };
+    // if (rules.email.test(userId)) return { result: true, keyName: 'email' };
+    // if (rules.phoneNumber.test(userId))
+    //   return { result: true, keyName: 'phoneNumber' };
+    // return { result: false };
   }
+  return { result: false };
+};
+
+export const checkLoginContactMode = (
+  userId: string,
+): ReturnCheckLoginInputValid => {
+  if (rules.userName.test(userId)) return { result: true, keyName: 'userName' };
+  if (rules.email.test(userId)) return { result: true, keyName: 'email' };
+  if (rules.phoneNumber.test(userId))
+    return { result: true, keyName: 'phoneNumber' };
   return { result: false };
 };
 
 export const checkInput = (value: string, forID: ForID) => {
   switch (forID) {
-    case 'user-otherContact':
-      return emailRule.test(value) || phoneNumberRule.test(value);
+    case 'user-contact':
+      return rules.email.test(value) || rules.phoneNumber.test(value);
     case 'user-fullName':
-      return fullNameRule.test(value);
+      return rules.fullName.test(value);
     case 'user-name':
-      return userNameRule.test(value);
+      return rules.userName.test(value);
     case 'user-password':
-      return passwordRule.test(value);
+      return rules.password.test(value);
     default:
       return false;
   }
 };
 
-export const seperateContact = (value: string): 'email' | 'phoneNumber' => {
-  if (emailRule.test(value)) return 'email';
-  return 'phoneNumber';
+export const seperateKeyName = (
+  mode: 'contact' | 'userId',
+  value: string,
+): KeyName => {
+  if (
+    mode === 'userId' &&
+    rules.userName.test(value) &&
+    !rules.phoneNumber.test(value) &&
+    !rules.email.test(value)
+  )
+    return 'userName';
+
+  if (!rules.email.test(value) && rules.phoneNumber.test(value))
+    return 'phoneNumber';
+  if (rules.email.test(value) && !rules.phoneNumber.test(value)) return 'email';
+  return mode;
+};
+
+export const submitSignUp = (
+  contact: string,
+  fullName: string,
+  userName: string,
+  password: string,
+): boolean => {
+  if (
+    (rules.email.test(contact) || rules.phoneNumber.test(contact)) &&
+    rules.fullName.test(fullName) &&
+    rules.userName.test(userName) &&
+    rules.password.test(password)
+  )
+    return true;
+  return false;
+};
+
+export const submitLogIn = (userId: string, password: string): boolean => {
+  if (
+    (rules.email.test(userId) ||
+      rules.phoneNumber.test(userId) ||
+      rules.userName.test(userId)) &&
+    rules.password.test(password)
+  )
+    return true;
+  return false;
 };

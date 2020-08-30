@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, unit, font } from 'styles/theme';
 import search from 'public/static/images/svg/search2.svg';
 
 const SearchInput: React.FC = () => {
@@ -25,7 +25,7 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.tableHeader};
 `;
 const Label = styled.label`
-  ${flexCenter}
+  ${css.flexCenter}
   position: relative;
 `;
 
@@ -35,8 +35,8 @@ const Icon = styled.div<{ url: string }>`
   left: 0;
   top: 0;
   margin: 6px 8px;
-  height: ${3 * unit + 'px'};
-  width: ${3 * unit + 'px'};
+  height: ${3 * css.unit + 'px'};
+  width: ${3 * css.unit + 'px'};
   background-color: ${(props) => props.theme.secondaryText};
   mask-image: url('${({ url }) => url}');
 `;
@@ -47,8 +47,8 @@ const Icon = styled.div<{ url: string }>`
 //   left: 0;
 //   top: 0;
 //   margin :  6px 8px;
-//   height: ${3 * unit + 'px'};
-//   width: ${3 * unit + 'px'};
+//   height: ${3 * css.unit + 'px'};
+//   width: ${3 * css.unit + 'px'};
 //   }
 // `;
 
@@ -57,7 +57,7 @@ const InputBox = styled.div`
   justify-content: flex-end;
 `;
 const Input = styled.input`
-  ${font}
+  ${css.font}
   font-size: 12px;
   width: 83%;
   padding: 5px 7px;

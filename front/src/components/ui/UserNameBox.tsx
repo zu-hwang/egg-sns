@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { fontBold, font } from 'styles/theme';
 
 interface UserNameBoxProps {
   username: string;
@@ -22,12 +22,12 @@ const Container = styled.div`
   }
 `;
 const Name = styled.p`
-  ${fontBold}
+  ${css.fontBold}
   font-size :15px;
   color: ${(props) => props.theme.primaryText};
 `;
 const ContentOrHashTag = styled.p`
-  ${font}
+  ${css.font}
   font-size:12px;
   font-weight: normal;
   color: ${(props) => props.theme.midtoneText};

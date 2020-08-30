@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold, unit, col, gutter } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
 import settingIcon from 'public/static/images/2x/setting.png';
 
@@ -43,18 +43,18 @@ const Profile: React.FC<ProfileProps> = ({
 };
 
 const Container = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   width: 100%;
   margin-top: 60px;
   & > div:first-child {
-    width: ${col + 'px'};
+    width: ${css.col + 'px'};
   }
 `;
 const InfoSection = styled.div`
   flex-direction: column;
   & > div {
-    ${flexCenter}
+    ${css.flexCenter}
     justify-content:flex-start;
   }
 `;
@@ -65,27 +65,27 @@ const Title = styled.span`
 `;
 
 const Icon = styled.img`
-  height: ${7 * unit + 'px'};
-  width: ${7 * unit + 'px'};
+  height: ${7 * css.unit + 'px'};
+  width: ${7 * css.unit + 'px'};
 `;
 const ModifyButton = styled.button`
   border: 1px solid ${({ theme }) => theme.border};
   padding: 4px 8px;
   margin-right: 10px;
   border-radius: 4px;
-  ${fontBold}
+  ${css.fontBold}
   font-size:14px;
   background: transparent;
 `;
 const CountBox = styled.ul`
   margin: 25px 0;
-  width: ${col * 2 + gutter + 'px'};
+  width: ${css.col * 2 + css.gutter + 'px'};
 `;
 const DataName = styled.li`
   display: inline-block;
   margin-right: 40px;
   & > span {
-    ${fontBold}
+    ${css.fontBold}
   }
 `;
 

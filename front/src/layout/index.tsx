@@ -1,18 +1,16 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
 import Header from 'src/components/header/Header';
-import { flexCenter } from 'styles/theme';
-import { RootState } from 'store/rootReducer';
 import Footer from 'src/components/sidebar/Footer';
 interface LayoutProps {
   children: React.ReactNode;
 }
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const user = useSelector((state: RootState) => state.account.user);
   return (
     <Container>
-      {user && <Header />}
+      <div></div>
+      <Header />
       <CenterBox>{children}</CenterBox>
       <FooterBox>
         <Footer position={'bottom'} />
@@ -23,8 +21,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
 const Container = styled.div`
   position: relative;
-  ${flexCenter}
-  flex-direction:column;
+  ${css.flexCenter}
+  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
   min-height: 100vh;
   background-color: ${(props) => props.theme.tableHeader};
@@ -32,8 +31,8 @@ const Container = styled.div`
 `;
 
 const CenterBox = styled.div`
+  ${css.flexCenter}
   width: ${(props) => props.theme.response.web + 'px'};
-  ${flexCenter}
   padding: 0 20px;
   /* min-height: 100vh; */
   justify-content: space-between;
@@ -42,7 +41,7 @@ const CenterBox = styled.div`
   margin-top: 70px;
 `;
 const FooterBox = styled.div`
-  margin: 50px 0;
+  margin: 20px 0;
 `;
 
 export default Layout;

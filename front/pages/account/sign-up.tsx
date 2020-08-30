@@ -1,35 +1,32 @@
 import * as React from 'react';
-// import { GetServerSideProps } from 'next';
+import * as redux from 'src/hooks/customRedux';
+import * as css from 'styles/theme';
+import * as account from 'store/account';
+import * as store from 'store';
+import * as route from 'next/router';
+import * as next from 'next';
+import * as saga from 'redux-saga';
+import API from 'src/util/api';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import * as types from 'store/types';
+import styled from 'styled-components';
+import SignUpBox from 'src/components/account/SignUpBox';
 import AccountLayout from 'src/layout/AccountLayout';
-import SignUpForm from 'src/components/account/SignUpForm';
 import AppDownloadLinkBox from 'src/components/ui/AppDownloadLinkBox';
 
-import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
-
-// import API from 'src/util/api';
-// import wapper from 'store';
-
 const SignUp = () => {
-  const router = useRouter();
-  const signUpSuccess = useSelector(
-    (state: types.StoreState) => state.account.signUpSuccess,
+  const router = route.useRouter();
+  const signUpSuccess = redux.useSelector(
+    (state) => state.account.signUpSuccess,
   );
-  // const onClickMoveBtn = React.useCallback(() => {
-  //   router.push('/');
-  // }, []);
-
+  const user = redux.useSelector((state) => state.account.user);
   React.useEffect(() => {
-    signUpSuccess && router.push('/');
-  }, [signUpSuccess]);
+    signUpSuccess && user && router.push('/account/onetap');
+  }, [signUpSuccess, user]);
+
   return (
     <AccountLayout>
       <CenterBox>
-        <SignUpForm />
+        <SignUpBox />
         <LoginNoticeBox>
           <p>계정이 있으신가요?</p>
           <Link href='/'>
@@ -43,7 +40,7 @@ const SignUp = () => {
 };
 
 const CenterBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
 `;
 
@@ -52,7 +49,7 @@ const LoginNoticeBox = styled.div`
   border-radius: 2px;
   margin-top: 10px;
   padding: 30px 0;
-  ${flexCenter}
+  ${css.flexCenter}
   border: 1px solid ${({ theme }) => theme.border};
   background-color: ${({ theme }) => theme.mainBackground};
   p {
@@ -64,7 +61,7 @@ const LoginNoticeBox = styled.div`
     cursor: pointer;
     border: none;
     background: transparent;
-    ${fontBold}
+    ${css.fontBold}
     font-size:14px;
     padding: 0;
     margin: 0;
@@ -72,18 +69,20 @@ const LoginNoticeBox = styled.div`
   }
 `;
 
-// export const getServerSideProps: GetServerSideProps = wapper.getServerSideProps(
-//   async (context) => {
-//     try {
-//       const cookie = context.req.headers.cookie
-//         ? context.req.headers.cookie
-//         : '';
-//       if (cookie) API.defaults.headers.Cookie = cookie;
-//       context.store.dispatch(store.requestUserData());
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   },
-// );
+//! Next에서 redux를 사용할때 getXXXProps에서 문제가 생김 그러므로, next-redux-wrapper를 사용하여  getXXXProps를 사용.. 한다함.. 음
+export const getServerSideProps: next.GetServerSideProps = store.wrapper.getServerSideProps(
+  async (context) => {
+    try {
+      console.log('메인 페이지 입니다');
+      const cookie = context.req ? context.req.headers.cookie : '';
+      if (context.req && cookie) API.defaults.headers.Cookie = cookie;
+      context.store.dispatch(account.requestUserData());
+      context.store.dispatch(saga.END);
+      await context.store.sagaTask.toPromise();
+    } catch (error) {
+      console.log('메인페이지 SSR 에러:', error);
+    }
+  },
+);
 
 export default SignUp;

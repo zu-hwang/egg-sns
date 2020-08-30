@@ -1,27 +1,31 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as egg from 'store/types';
+import * as redux from 'src/hooks/customRedux';
+import * as route from 'next/router';
 import * as account from 'store/account';
-
+import * as css from 'styles/theme';
+import * as antd from '@ant-design/icons';
+import styled from 'styled-components';
 import BlueBtn from 'src/components/ui/BlueBtn';
 import IconKeyHole from 'src/components/ui/icon/IconKeyHole';
 
-import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
+const OneTap: React.FC = () => {
+  const router = route.useRouter();
+  const dispatch = redux.useDispatch();
+  const user = redux.useSelector((s) => s.account.user);
+  const isLoading = redux.useSelector((s) => s.account.isLoading);
+  const onClickSaveBtn = React.useCallback(async () => {
+    if (user) {
+      dispatch(account.requestCookieExpiry());
+      setTimeout(() => {
+        // 로딩창 보여주고
+        router.push('/');
+      }, 2 * 1000);
+    }
+  }, [user]);
+  const onClickNextBtn = React.useCallback(() => {
+    router.push('/');
+  }, []);
 
-const OneTap = () => {
-  const disparch = useDispatch();
-  const logInSuccess = useSelector(
-    (state: egg.StoreState) => state.account.logInSuccess,
-  );
-  const signUpSuccess = useSelector(
-    (state: egg.StoreState) => state.account.signUpSuccess,
-  );
-
-  const onClickSaveBtn = React.useCallback(() => {}, []);
-  const onClickPassBtn = React.useCallback(() => {
-    disparch(account.resetSuccess());
-  }, [logInSuccess, signUpSuccess]);
   return (
     <Container>
       <CenterBox>
@@ -31,21 +35,24 @@ const OneTap = () => {
           다음에 다시 입력할 필요가 없도록 이 브라우저에 로그인 정보가
           저장됩니다.
         </SubTitle>
-        <BlueBtn onClick={onClickSaveBtn}>정보 저장</BlueBtn>
-        <BlueBtn onClick={onClickPassBtn} invert={true}>
+        <BlueBtn onClick={onClickSaveBtn}>
+          {isLoading ? <antd.LoadingOutlined /> : '정보 저장'}
+        </BlueBtn>
+        <BlueBtn onClick={onClickNextBtn} invert={true}>
           나중에 하기
         </BlueBtn>
       </CenterBox>
     </Container>
   );
 };
+
 const Container = styled.section`
-  ${flexCenter}
+  ${css.flexCenter}
   width: 100%;
   padding-bottom: 40px;
 `;
 const CenterBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   width: 350px;
   padding: 30px 40px 20px;
@@ -54,7 +61,7 @@ const CenterBox = styled.div`
 `;
 const Title = styled.h2`
   text-align: center;
-  ${fontBold}
+  ${css.fontBold}
   font-size:14px;
   color: ${({ theme }) => theme.primaryText};
   margin: 20px 0 8px;

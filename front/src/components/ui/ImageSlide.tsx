@@ -1,12 +1,11 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, unit } from 'styles/theme';
 import heart from 'public/static/images/svg/heart.svg';
-// import heartActive from 'public/static/images/svg/heart-active.svg';
 import comment from 'public/static/images/svg/comment.svg';
 import send from 'public/static/images/svg/send.svg';
 import bookmark from 'public/static/images/svg/bookmark.svg';
-// import bookmarkActive from 'public/static/images/svg/bookmark-active.svg';
+
 interface ImageSlideProps {
   feedImage: Array<string>;
 }
@@ -48,13 +47,13 @@ const Divider = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.divider};
 `;
 const IconBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   padding: 2px 8px;
 `;
 const Icon = styled.img`
-  height: ${6 * unit + 'px'};
-  width: ${6 * unit + 'px'};
+  height: ${6 * css.unit + 'px'};
+  width: ${6 * css.unit + 'px'};
   margin: 9px;
 `;
 export default ImageSlide;
