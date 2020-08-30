@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import CommentInput from 'src/components/feedCard/CommentInput';
-import FeedHeader from 'src/components/feedCard/FeedHeader';
-import CommentListBox from 'src/components/feedCard/CommentListBox';
 import ImageSlide from 'src/components/ui/ImageSlide';
+import FeedHeader from 'src/components/feedCard/FeedHeader';
+import CommentInput from 'src/components/feedCard/CommentInput';
+import CommentListBox from 'src/components/feedCard/CommentListBox';
 
 interface FeedCardProps {
   feed: any; // feed 타입 다시 확인

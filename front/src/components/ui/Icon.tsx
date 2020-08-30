@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { unit } from 'styles/theme';
 
 interface IconProps {
   url: string;
@@ -12,8 +12,8 @@ const Icon: React.FC<IconProps> = ({ url }) => {
 
 const Image = styled.img`
   display: block;
-  height: ${6 * unit + 'px'};
-  width: ${6 * unit + 'px'};
+  height: ${6 * css.unit + 'px'};
+  width: ${6 * css.unit + 'px'};
   /* margin: 9px; */
 `;
 

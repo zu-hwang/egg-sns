@@ -1,74 +1,83 @@
 import * as React from 'react';
-import { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-
+import * as redux from 'src/hooks/customRedux';
+import * as css from 'styles/theme';
+import * as antd from '@ant-design/icons';
 import * as account from 'store/account';
-import useInput from 'src/hooks/useInput';
-import { checkLoginInputValid } from 'src/util/inputValidation';
+import useInputDefault from 'src/hooks/useInputDefault';
 
 import BlueBtn from 'src/components/ui/BlueBtn';
 import OrDivider from 'src/components/ui/OrDivider';
-import AccountInput from 'src/components/ui/AccountInput';
+import LoginInput from 'src/components/ui/LoginInput';
 
 import styled from 'styled-components';
-import { flexCenter, font, fontBold } from 'styles/theme';
+
 import image from 'src/data/loginPageImageUrl';
 
 const LoginForm: React.FC = () => {
-  const dispatch = useDispatch();
-  const [validIconOnOff, setValidIconOnOff] = useState(false);
-  const [userName, onChangeUserName] = useInput('');
-  const [password, onChangePassword] = useInput('');
-
-  const checkInputValid = useCallback((): boolean => {
-    return !checkLoginInputValid(userName, password);
-  }, [userName, password]);
-
-  const onClickSubmit = useCallback(
-    (e) => {
-      setValidIconOnOff(true); //  인풋 유효성 검사
-      const { result, keyName = '' } = checkLoginInputValid(userName, password);
-      if (result) {
-        interface BodyData {
-          userName?: string;
-          email?: string;
-          phoneNumber?: string;
-          password: string;
-        }
-        const bodyData: BodyData = { [keyName]: userName, password };
-        dispatch(account.requestLogIn(bodyData));
-      }
-    },
-    [userName, password],
+  const dispatch = redux.useDispatch();
+  const isLoading = redux.useSelector((state) => state.account.isLoading);
+  const logInError = redux.useSelector((state) => state.account.logInError);
+  const userIdValidMessage = redux.useSelector(
+    (state) => state.account.userIdValidMessage,
   );
-
+  const passwordValidMessage = redux.useSelector(
+    (state) => state.account.passwordValidMessage,
+  );
+  const [iconOn, setIconOn] = React.useState(false);
+  const [userId, onChangeUserId] = useInputDefault('');
+  const [password, onChangePassword] = useInputDefault('');
+  const smallCheck = React.useCallback((): boolean => {
+    if (userId.length > 0 && password.length > 7) {
+      return !true;
+    }
+    return !false;
+  }, [userId, password]);
+  const onClickSubmit = React.useCallback(
+    (e) => {
+      setIconOn(true); // 에러 표시 활성화
+      const bodyData = {
+        password,
+        userId,
+      };
+      dispatch(account.requestLogIn(bodyData));
+    },
+    [userId, password],
+  );
   return (
     <Container>
       <FormBox>
-        <AccountInput
-          forId={'user-name'}
+        <LoginInput
+          forId={'user-id'}
           label={'전화번호, 사용자 이름 또는 이메일'}
-          value={userName}
-          onChangeValue={onChangeUserName}
-          validIconOnOff={validIconOnOff}
+          value={userId}
+          onChange={onChangeUserId}
+          iconOn={iconOn}
+          iconError={userIdValidMessage}
         />
-        <AccountInput
+        <LoginInput
           forId={'user-password'}
           label={'비밀번호'}
           type={'password'}
           value={password}
-          onChangeValue={onChangePassword}
-          validIconOnOff={validIconOnOff}
+          onChange={onChangePassword}
+          iconOn={iconOn}
+          iconError={passwordValidMessage}
         />
-        <BlueBtn disabled={checkInputValid()} onClick={onClickSubmit}>
-          {/* 서버요청중일떼 로딩중 로테이션 아이콘 띄우기 */}
-          로그인
+        <BlueBtn disabled={smallCheck()} onClick={onClickSubmit}>
+          {isLoading ? <antd.LoadingOutlined /> : '로그인'}
         </BlueBtn>
       </FormBox>
       <OrDivider />
       <FacebookLoginBtn>
         <Icon /> FaceBook으로 로그인
       </FacebookLoginBtn>
+      {/* 로그인 실패 할 경우 메세지 출력 */}
+      {iconOn &&
+        logInError &&
+        logInError.code !== 500 &&
+        typeof logInError.message === 'string' && (
+          <Error>{logInError.message}</Error>
+        )}
       <ForgotPasswordBtn>비밀번호를 잊으셨나요?</ForgotPasswordBtn>
     </Container>
   );
@@ -77,29 +86,29 @@ const LoginForm: React.FC = () => {
 const Container = styled.section`
   width: 268px;
   & > * {
-    ${font}
+    ${css.font}
   }
 `;
 
 const FormBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   width: 268px;
   border-radius: 2px;
   p:first-child {
     color: ${({ theme }) => theme.secondaryText};
-    ${fontBold}
+    ${css.fontBold}
     font-size: 14px;
     margin-bottom: 15px;
   }
 `;
 const FacebookLoginBtn = styled.button`
   cursor: pointer;
-  ${flexCenter}
+  ${css.flexCenter}
   width:100%;
   border: none;
   background: transparent;
-  ${fontBold}
+  ${css.fontBold}
   font-size: 14px;
   /* background-color: tomato; */
   color: ${({ theme }) => theme.darkBlue};
@@ -120,5 +129,11 @@ const ForgotPasswordBtn = styled.button`
   padding-top: 16px;
   font-size: 12px;
   color: ${({ theme }) => theme.darkBlue};
+`;
+const Error = styled.div`
+  ${css.flexCenter}
+  font-size:12px;
+  color: ${({ theme }) => theme.red};
+  margin-top: 15px;
 `;
 export default LoginForm;

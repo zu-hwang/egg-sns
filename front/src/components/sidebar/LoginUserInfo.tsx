@@ -1,9 +1,9 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter } from 'styles/theme';
 import Avatar from 'src/components/ui/Avatar';
-import UserNameBox from 'src/components/ui/UserNameBox';
 import userImage from 'public/static/images/zuzu/zuzu.jpg';
+import UserNameBox from 'src/components/ui/UserNameBox';
 
 const userInfo = {
   id: 1,
@@ -21,7 +21,7 @@ const LoginUserInfo: React.FC = ({}) => {
   );
 };
 const Container = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:flex-start;
   /* border: 1px solid tomato; */
   width: 100%;

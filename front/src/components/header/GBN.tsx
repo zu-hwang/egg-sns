@@ -1,10 +1,10 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, unit } from 'styles/theme';
-import SearchInput from 'src/components/header/SearchInput';
 import Nav from 'src/components/header/Nav';
 import logo from 'public/static/images/svg/logo.svg';
 import logoText from 'public/static/images/svg/logo-text.svg';
+import SearchInput from 'src/components/header/SearchInput';
 
 const GBN: React.FC = () => {
   return (
@@ -30,7 +30,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 const LogoBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:flex-start;
   width: 200px;
   position: relative;
@@ -39,8 +39,8 @@ const LogoBox = styled.div`
 const Logo = styled.img`
   ${(props) =>
     props.src === logo
-      ? `height:${6 * unit}px;`
-      : `height:${7 * unit}px; position:relative; top:3px`};
+      ? `height:${6 * css.unit}px;`
+      : `height:${7 * css.unit}px; position:relative; top:3px`};
 `;
 // const ReIcon = styled(Icon)``
 const Divider = styled.div`
@@ -54,7 +54,7 @@ const SearchBox = styled.div``;
 
 const NavBox = styled.div`
   width: 200px;
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content: flex-end;
 `;
 

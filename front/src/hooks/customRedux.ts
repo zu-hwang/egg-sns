@@ -1,9 +1,6 @@
-import {
-  useSelector as useReduxSelector,
-  TypedUseSelectorHook,
-  useDispatch as useReduxDispatch,
-} from 'react-redux';
-import { RootState } from 'store/rootReducer';
+import * as redux from 'react-redux';
+import * as egg from 'store/types';
 
-export const useDispatch = useReduxDispatch;
-export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
+export const useDispatch = redux.useDispatch;
+export const useSelector: redux.TypedUseSelectorHook<egg.StoreState> =
+  redux.useSelector;

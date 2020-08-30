@@ -1,7 +1,7 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
-import { flexCenter } from 'styles/theme';
 import SampleImage from 'public/static/images/zuzu/2.jpg';
 
 const Large: React.FC = () => {
@@ -30,7 +30,7 @@ const ImageBox = styled.div`
   position: relative;
 `;
 const GradientBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   position: absolute;
   bottom: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));

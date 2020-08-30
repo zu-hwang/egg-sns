@@ -1,17 +1,40 @@
-import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import * as React from 'react';
+import * as StyledComponent from 'styled-components';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from 'next/document';
 
-export default class MyDocument extends Document {
-  static async getInitalProps(ctx) {
-    const sheet = new ServerStyleSheet();
+class MyDocument extends Document {
+  static async getInitialProps(
+    ctx: DocumentContext,
+    // ): Promise<DocumentInitialProps> {
+  ) {
+    const sheet = new StyledComponent.ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+      });
     try {
       ctx.renderPage = () =>
         originalRenderPage({
+          // ? enhanceApp 에는 사용하드 스타일 툴을 연결-작성
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         });
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      // sheet.seal();
+      /**
+       * finally에서 위치에서 sheet.seal() 호출 한 뒤
+       * 리턴에서 스타일을 다시 그리게 되면 스타일 2번 그렸다고 오류난다.
+       * 그렇다고 씰 함수만 finally에 두면 ? 빌드할때 리턴없어서 오류남!
+       */
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
@@ -19,15 +42,10 @@ export default class MyDocument extends Document {
           <>
             {initialProps.styles}
             {sheet.getStyleElement()}
+            {/* 추가되는 ui 가 있다면 예, 메터리얼UI와 같은 */}
           </>
         ),
       };
-    } catch (error) {
-      console.error(error);
-      return;
-    } finally {
-      sheet.seal();
-      return;
     }
   }
 
@@ -48,3 +66,5 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+export default MyDocument;

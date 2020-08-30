@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import * as React from 'react';
+import * as route from 'next/router';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { col, gutter } from 'styles/theme';
+import image2 from 'public/static/images/zuzu/2.jpg';
 import Layout from 'src/layout';
+import Footer from 'src/components/sidebar/Footer';
 import Profile from 'src/components/myPage/Profile';
 import TabMenu from 'src/components/myPage/TabMenu';
-import image2 from 'public/static/images/zuzu/2.jpg';
-import Footer from 'src/components/sidebar/Footer';
 import FeedBoard from 'src/components/myPage/FeedBoard';
 
 // 나의 피드목록 보기
@@ -27,10 +27,10 @@ const data = {
 };
 const MyFeed = ({}) => {
   // 동적라우팅에 사용
-  const router = useRouter();
+  const router = route.useRouter();
   const { userName } = router.query;
+  const [tabSelected] = React.useState('feed');
 
-  const [tabSelected] = useState('feed');
   return (
     <Layout>
       <Container>
@@ -53,7 +53,7 @@ const MyFeed = ({}) => {
   );
 };
 const Container = styled.div`
-  width: ${col * 3 + gutter * 2 + 'px'};
+  width: ${css.col * 3 + css.gutter * 2 + 'px'};
   & > :last-child {
     /* 푸터 */
     width: 100%;

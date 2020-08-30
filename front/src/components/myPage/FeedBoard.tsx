@@ -1,11 +1,8 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, gutter } from 'styles/theme';
-// import image from 'src/data/feedImageUrl';
 import Feed from 'src/components/myPage/Feed';
-// import feedImageUrl from 'src/data/feedImageUrl';
 import zuzuImage from 'public/static/images/zuzu/4.jpg';
-// import IconSprite from 'src/components/ui/IconSprite';
 
 const myFeedList = [
   {
@@ -65,14 +62,14 @@ const FeedBoard: React.FC = () => {
 };
 const Board = styled.div`
   width: 100%;
-  padding-top: ${gutter + 'px'};
-  ${flexCenter}
+  padding-top: ${css.gutter + 'px'};
+  ${css.flexCenter}
   flex-wrap:wrap;
   justify-content: flex-start;
 `;
 const GutterMap = styled.div<{ isThird: boolean }>`
-  padding-bottom: ${gutter + 'px'};
-  padding-right: ${({ isThird }) => (isThird ? '0px' : gutter + 'px')};
+  padding-bottom: ${css.gutter + 'px'};
+  padding-right: ${({ isThird }) => (isThird ? '0px' : css.gutter + 'px')};
   position: relative;
 `;
 

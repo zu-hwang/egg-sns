@@ -1,11 +1,12 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
-import PhoneAnimation from 'src/components/account/PhoneAnimation';
-import LoginForm from 'src/components/account/LoginForm';
-import AppDownloadLinkBox from '../ui/AppDownloadLinkBox';
+
 import logoText from 'public/static/images/svg/logo-text.svg';
+import LoginForm from 'src/components/account/LoginForm';
+import PhoneAnimation from 'src/components/account/PhoneAnimation';
+import AppDownloadLinkBox from 'src/components/ui/AppDownloadLinkBox';
 
 const Login = () => {
   return (
@@ -18,7 +19,7 @@ const Login = () => {
         </FormBox>
         <SignUpNoticeBox>
           <p>계정이 없으신가요?</p>
-          <Link href='/sign-up'>
+          <Link href='/account/sign-up' as='sign-up'>
             <span>가입하기</span>
           </Link>
         </SignUpNoticeBox>
@@ -29,7 +30,7 @@ const Login = () => {
 };
 
 const CenterBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
 `;
 
 const Logo = styled.img`
@@ -38,7 +39,7 @@ const Logo = styled.img`
   margin: 20px 0 30px;
 `;
 const FormBox = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   width: 350px;
   border-radius: 2px;
@@ -51,7 +52,7 @@ const SignUpNoticeBox = styled.div`
   width: 100%;
   border-radius: 2px;
   padding: 30px 0;
-  ${flexCenter}
+  ${css.flexCenter}
   border: 1px solid ${({ theme }) => theme.border};
   background-color: ${({ theme }) => theme.mainBackground};
   p {
@@ -63,7 +64,7 @@ const SignUpNoticeBox = styled.div`
     cursor: pointer;
     border: none;
     background: transparent;
-    ${fontBold}
+    ${css.fontBold}
     font-size:14px;
     padding: 0;
     margin: 0;

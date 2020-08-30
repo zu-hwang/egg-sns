@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { unit } from 'styles/theme';
 import send from 'public/static/images/svg/send.svg';
 import heart from 'public/static/images/svg/heart.svg';
 import myPage from 'public/static/images/svg/myPage.svg';
@@ -16,8 +16,8 @@ const Nav: React.FC = () => {
 };
 
 const Icon = styled.img`
-  height: ${6 * unit + 'px'};
-  width: ${6 * unit + 'px'};
+  height: ${6 * css.unit + 'px'};
+  width: ${6 * css.unit + 'px'};
   margin-right: 25px;
   &:last-child {
     margin-right: 0;

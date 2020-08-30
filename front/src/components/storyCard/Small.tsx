@@ -1,7 +1,7 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
-import { flexCenter } from 'styles/theme';
 
 const Small: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const Small: React.FC = () => {
   );
 };
 const Container = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   padding-left: 12px;
   margin: 0 2px;

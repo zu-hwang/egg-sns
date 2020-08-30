@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import * as redux from 'src/hooks/customRedux';
+import * as css from 'styles/theme';
+import styled from 'styled-components';
 import Footer from 'src/components/sidebar/Footer';
 import Header from 'src/components/header/Header';
-import * as store from 'store';
-import styled from 'styled-components';
-import { flexCenter } from 'styles/theme';
 
 interface AccountLayoutProps {
   children: React.ReactNode;
 }
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
-  const user = useSelector((state: store.RootState) => state.account.user);
+  const user = redux.useSelector((s) => s.account.user);
   return (
     <Container>
       {user && <Header />}
@@ -25,7 +24,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
 const Container = styled.section`
   width: 100vw;
   height: 100vh;
-  ${flexCenter}
+  ${css.flexCenter}
   flex-direction:column;
   position: relative;
   background-color: ${({ theme }) => theme.tableHeader};

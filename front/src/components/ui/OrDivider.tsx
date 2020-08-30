@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
+import * as css from 'styles/theme';
 
 const OrDivider: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const OrDivider: React.FC = () => {
   );
 };
 const Devider = styled.div`
-  ${flexCenter}
+  ${css.flexCenter}
   margin: 20px 0;
   width: 100%;
   div {
@@ -22,7 +22,7 @@ const Devider = styled.div`
   span {
     width: 100%;
     text-align: center;
-    ${fontBold}
+    ${css.fontBold}
     font-size:13px;
     color: ${({ theme }) => theme.secondaryText};
   }

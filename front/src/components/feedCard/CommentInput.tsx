@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, font, fontBold } from 'styles/theme';
 
 const CommentInput: React.FC = () => {
   return (
@@ -13,14 +13,14 @@ const CommentInput: React.FC = () => {
 
 const Container = styled.div`
   padding: 5px 16px;
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content: space-between;
   position: relative;
   overflow: hidden;
 `;
 
 const Input = styled.textarea`
-  ${font}
+  ${css.font}
   flex-grow: 1;
   font-size: 14px;
   position: relative;
@@ -43,7 +43,7 @@ const SubmitButton = styled.button`
   border: none;
   padding: 0;
   margin-left: 15px;
-  ${fontBold}
+  ${css.fontBold}
   background: transparent;
   text-align: right;
 `;

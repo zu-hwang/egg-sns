@@ -1,15 +1,36 @@
-// import * as React from 'react';
-import { useState, useCallback, Dispatch, SetStateAction } from 'react';
+import * as redux from 'src/hooks/customRedux';
+import * as React from 'react';
+import * as egg from 'store/types';
+import * as account from 'store/account';
 
-const useInput = (
-  initValue: string,
-): [string, (e: any) => void, Dispatch<SetStateAction<string>>] => {
-  const [value, setValue] = useState(initValue);
-  const handler = useCallback((e: any) => {
-    // console.log('useInput', e.target.value);
-    setValue(e.target.value);
-  }, []);
-  return [value, handler, setValue];
+export type KeyNameProps =
+  | 'contact'
+  | 'userId'
+  | 'email'
+  | 'phoneNumber'
+  | 'userName'
+  | 'fullName'
+  | 'password';
+
+export const useInput = (
+  keyName: KeyNameProps,
+): [string, (e: any) => void, React.Dispatch<React.SetStateAction<string>>] => {
+  const [value, setValue] = React.useState('');
+  const dispatch = redux.useDispatch();
+  const handleOnChange = React.useCallback(
+    (e: any) => {
+      setValue(e.target.value);
+      console.log(keyName);
+      let bodyData: egg.RequestInputValidData = {
+        keyName,
+        value: e.target.value,
+      };
+      dispatch(account.requestInputValid(bodyData));
+    },
+    [keyName],
+  );
+
+  return [value, handleOnChange, setValue];
 };
 
 export default useInput;

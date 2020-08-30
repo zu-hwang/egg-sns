@@ -1,7 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
-
 import Small from 'src/components/storyCard/Small';
 import Large from 'src/components/storyCard/Large';
 
@@ -56,15 +55,15 @@ const Container = styled.div`
 `;
 const Header = styled.header`
   padding: 0px 16px 10px 16px;
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   span {
-    ${fontBold}
+    ${css.fontBold}
     font-size: 14px;
     color: ${({ theme }) => theme.secondaryText};
   }
   button {
-    ${fontBold}
+    ${css.fontBold}
     font-size: 14px;
     border: none;
     background: transparent;

@@ -1,9 +1,8 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, fontBold } from 'styles/theme';
-import IconSprite from 'src/components/ui/IconSprite';
 import image from 'src/data/loginPageImageUrl';
-// background-position: -347px -329px;
+import IconSprite from 'src/components/ui/IconSprite';
 
 const TabMenu: React.FC = () => {
   // 탭메뉴를 state로 관리해야 하나...?
@@ -58,16 +57,16 @@ const LocalNav = styled.nav`
 const Ul = styled.ul`
   width: 100%;
   position: relative;
-  ${flexCenter}
+  ${css.flexCenter}
 `;
 const Li = styled.li`
-  ${flexCenter}
+  ${css.flexCenter}
   justify-content:space-between;
   position: relative;
   width: 55px;
   margin: 0 20px;
   padding: 20px 2px;
-  ${fontBold}
+  ${css.fontBold}
   font-size: 12px;
   text-align: center;
   top: -1px;

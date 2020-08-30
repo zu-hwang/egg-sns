@@ -2,14 +2,9 @@ import * as React from 'react';
 import * as antd from '@ant-design/icons';
 import * as css from 'styles/theme';
 import styled from 'styled-components';
-import errorMessageMap from 'src/util/errorMessage';
 
-export type ForID =
-  | 'user-contact'
-  | 'user-fullName'
-  | 'user-name'
-  | 'user-password';
-interface AccountInputProps {
+export type ForID = 'user-id' | 'user-password';
+interface LoginInputProps {
   forId: ForID;
   value: string;
   label?: string;
@@ -18,16 +13,20 @@ interface AccountInputProps {
   iconError?: string | null;
   onChange: (e: any) => void;
 }
-const AccountInput: React.FC<AccountInputProps> = (props) => {
+const LoginInput: React.FC<LoginInputProps> = (props) => {
   const [active, setActive] = React.useState(false);
   const [reType, setReType] = React.useState(props.type);
   const TogglePasswordVisible = React.useCallback(() => {
     if (reType === 'password') setReType('text');
     if (reType === 'text') setReType('password');
   }, [reType]);
-  const onFocus = React.useCallback(() => setActive(true), []);
+  const onFocus = React.useCallback(() => {
+    setActive(true);
+  }, []);
   const onBlur = React.useCallback(() => {
-    if (props.value.length === 0) setActive(false);
+    if (props.value.length === 0) {
+      setActive(false);
+    }
   }, [props.value]);
   return (
     <>
@@ -37,7 +36,7 @@ const AccountInput: React.FC<AccountInputProps> = (props) => {
             (props.iconError === 'ok' ? (
               <ValidPass />
             ) : (
-              props.iconError && <ValidError />
+              props.iconError === 'validationError' && <ValidError />
             ))}
           {props.type === 'password' && props.value.length > 0 && (
             <VisiblePasswordBtn onClick={TogglePasswordVisible}>
@@ -61,27 +60,20 @@ const AccountInput: React.FC<AccountInputProps> = (props) => {
           </Label>
         )}
       </Box>
-
-      {props.iconOn &&
-        props.iconError === 'overlapError' &&
-        (props.forId === 'user-contact' || props.forId === 'user-name') && (
-          <ErrorMessage>
-            {errorMessageMap[props.iconError][props.forId]}
-          </ErrorMessage>
-        )}
-      {/* 아래는 확인용 : 나중에 지우기  */}
     </>
   );
 };
 
-AccountInput.defaultProps = {
+LoginInput.defaultProps = {
   type: 'text',
   iconOn: false,
 };
+
 const Box = styled.div`
   position: relative;
   width: 100%;
 `;
+
 const Input = styled.input<{ isActive: boolean }>`
   padding: 17px 10px 3px;
   margin-bottom: 6px;
@@ -107,6 +99,7 @@ const Input = styled.input<{ isActive: boolean }>`
   }
 `;
 /* ${인풋}:focus ~ ${라벨} { : 이 방식은 작동 안함.. 왜안뒘..? */
+
 const Label = styled.label<{ isActive: boolean }>`
   color: ${({ theme }) => theme.secondaryText};
   position: absolute;
@@ -118,6 +111,7 @@ const Label = styled.label<{ isActive: boolean }>`
   transition: 0.2s ease-in-out all;
   padding-left: 12px;
 `;
+
 const RightBox = styled.div`
   position: absolute;
   top: 11px;
@@ -132,16 +126,12 @@ const VisiblePasswordBtn = styled.span`
   margin-left: 8px;
   position: relative;
 `;
+
 const ValidError = styled(antd.CloseCircleOutlined)`
   color: ${({ theme }) => theme.red};
 `;
 const ValidPass = styled(antd.CheckCircleOutlined)`
   color: ${({ theme }) => theme.disable};
 `;
-const ErrorMessage = styled.div`
-  font-size: 12px;
-  color: ${({ theme }) => theme.red};
-  margin-bottom: 10px;
-  transition: 0.5s ease-in-out all;
-`;
-export default AccountInput;
+
+export default LoginInput;

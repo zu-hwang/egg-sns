@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as css from 'styles/theme';
 import styled from 'styled-components';
-import { flexCenter, font } from 'styles/theme';
 import footerList from 'src/data/footerList';
 
 interface FooterProps {
@@ -39,7 +39,7 @@ const FooterNav = styled.nav`
     if (position === 'bottom') {
       return `
       width: 1000px;
-      ${flexCenter}
+      ${css.flexCenter}
       justify-content: space-between;
       margin-top: 0;
       margin: 0 auto;
@@ -51,13 +51,13 @@ const FooterNav = styled.nav`
       `;
     }
   }}
-  ${font}
+  ${css.font}
 `;
 const Ul = styled.ul`
   ${({ theme, position }: { theme: any; position: string }): string => {
     if (position === 'bottom') {
       return `
-        ${flexCenter}
+        ${css.flexCenter}
         justify-content:flex-start;
         `;
     } else {
