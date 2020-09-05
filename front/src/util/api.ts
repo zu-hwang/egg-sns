@@ -1,5 +1,6 @@
 import * as axios from 'axios';
 import * as egg from 'store/types';
+import * as feed from 'store/feed/';
 
 // let headers = new Headers();
 // headers.append('Content-Type', 'application/json');
@@ -33,7 +34,7 @@ export const logIn = async (
 
 /** @api요청_로그아웃 */
 export const logOut = async (): Promise<axios.AxiosResponse<any>> =>
-  await api.delete('/account/log-out');
+  await api.get('/account/log-out');
 
 /** @api요청_쿠키_유저정보_가져오기 */
 export const loadUserData = async (): Promise<axios.AxiosResponse<any>> =>
@@ -48,5 +49,16 @@ export const inputValidation = async (
 /** @api요청_쿠키_만료연장 */
 export const cookieExpiry = async (): Promise<axios.AxiosResponse<any>> =>
   await api.get('/account/cookie-expiry');
+
+/** @이미지업로드_피드 */
+export const uploadImage = async (
+  formData,
+): Promise<axios.AxiosResponse<any>> =>
+  await api.post('/upload/feed', formData);
+
+/** @NEW_FEED_UPLOAD */
+export const uploadNewFeed = async (
+  data: feed.RequestNewFeedData,
+): Promise<axios.AxiosResponse<any>> => await api.post('/feed/create', data);
 
 export default api;

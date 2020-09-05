@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as css from 'styles/theme';
+import * as API from 'src/util/api';
 import styled from 'styled-components';
 import Nav from 'src/components/header/Nav';
 import logo from 'public/static/images/svg/logo.svg';
@@ -7,10 +8,14 @@ import logoText from 'public/static/images/svg/logo-text.svg';
 import SearchInput from 'src/components/header/SearchInput';
 
 const GBN: React.FC = () => {
+  const onClickLogout = async () => {
+    const result = await API.logOut();
+    console.log('로그아웃 ', { type: typeof result });
+  };
   return (
     <Container>
       <LogoBox>
-        <Logo src={logo} />
+        <Logo src={logo} onClick={onClickLogout} />
         <Divider></Divider>
         <Logo src={logoText} />
       </LogoBox>

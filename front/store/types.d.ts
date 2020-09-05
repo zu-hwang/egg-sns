@@ -7,6 +7,7 @@ import { AnyAction } from 'redux';
 /** @루트_스토어 인터페이스 */
 export interface StoreState {
   account: Account;
+  feed: Feed;
 }
 
 /** @루트_사가_스토어 타입 */
@@ -17,8 +18,11 @@ export interface SagaStore extends Store {
 /** @루트_리듀서 타입 */
 export type RootReducer = typeof import('./rootReducer').default;
 
-/** @계정 회원가입 `signUpError_:_message` 타입 */
-export type InputErrorMessage =
+/** @액션크리에이터 타입 */
+// export type ActionCreater<T, P> = (payload?: P) => { type: T; payload?: P };
+
+export /** @계정 회원가입 `signUpError_:_message` 타입 */
+type InputErrorMessage =
   | string
   | {
       userName: string | null;
@@ -43,6 +47,12 @@ export interface User {
   secretMode: boolean;
 }
 
+/** @Feed 전체상태 `feed` Store 인터페이스*/
+export interface Feed {
+  modalNewFeed: bool;
+  uplodedImages: string[];
+}
+
 /** @계정 전체상태 `account` 인터페이스*/
 export interface Account {
   user: User | null;
@@ -62,13 +72,7 @@ export interface Account {
 }
 
 /** @계정 액션생성자 `requestSignUp` 의 `payload:Props`인터페이스  */
-export interface RequestSignUpData {
-  userName: string;
-  password: string;
-  fullName: string;
-  email?: string;
-  phoneNumber?: string;
-}
+
 /** @계정 액션생성자 `requestSignUp` 의 `Return` 인터페이스  */
 export interface ReturnRequestSignUp {
   type: typeof account.REQUEST_SIGN_UP;

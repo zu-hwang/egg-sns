@@ -39,10 +39,13 @@ function* fetchUserData(action: egg.ReturnRequestUserData) {
     console.log('사가 :유저데이터 업데이트');
     yield effects.put(account.setLoading(true));
     const result = yield effects.call(API.loadUserData);
-    yield effects.put(account.updateUserData(result.data.user));
-    yield effects.put(account.setLoading(false));
+    console.log({ result });
+    if (result.data && result.data.user) {
+      yield effects.put(account.updateUserData(result.data.user));
+    }
   } catch (error) {
-    console.log(error.response.data.message);
+    console.log(error);
+  } finally {
     yield effects.put(account.setLoading(false));
   }
 }

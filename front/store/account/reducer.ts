@@ -18,6 +18,23 @@ export const initialState: egg.Account = {
   isLoading: false,
 };
 
+// type Action =
+//   | ReturnType<typeof account.requestSignUp>
+//   | ReturnType<typeof account.setLoading>
+//   | ReturnType<typeof account.requestSignUp>
+//   | ReturnType<typeof account.setLoading>
+//   | ReturnType<typeof account.setSignUpError>
+//   | ReturnType<typeof account.successSignUp>
+//   | ReturnType<typeof account.successLogIn>
+//   | ReturnType<typeof account.setLogInError>
+//   | ReturnType<typeof account.requestLogIn>
+//   | ReturnType<typeof account.updateUserData>
+//   | ReturnType<typeof account.requestUserData>
+//   | ReturnType<typeof account.resetSuccess>
+//   | ReturnType<typeof account.requestInputValid>
+//   | ReturnType<typeof account.setValidMessage>
+//   | ReturnType<typeof account.requestCookieExpiry>;
+
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
