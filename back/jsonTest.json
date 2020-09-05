@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "userName": "blueberry",
+    "password": "$2b$12$Ok8MdSG/0QEcXm6gNzwpre0TcagNdnHLrMA1D2rfVzUmbiDuzogRS",
+    "email": "blue.berry@egg.com",
+    "phoneNumber": "010-9999-9999",
+    "fullName": "수정할꾸야",
+    "imageUrl": null,
+    "content": "블루베리는 내용을 수정하였지욥",
+    "secretMode": 1,
+    "deletedAt": null,
+    "createdAt": "2020-09-02 09:35:01",
+    "updatedAt": "2020-09-03 06:17:14"
+  },
+  false,
+  false,
+  {
+    "id": 1,
+    "userName": "blueberry",
+    "password": "$2b$12$Ok8MdSG/0QEcXm6gNzwpre0TcagNdnHLrMA1D2rfVzUmbiDuzogRS",
+    "email": "blue.berry@egg.com",
+    "phoneNumber": "010-9999-9999",
+    "fullName": "수정할꾸야",
+    "imageUrl": null,
+    "content": "블루베리는 내용을 수정하였지욥",
+    "secretMode": 1,
+    "deletedAt": null,
+    "createdAt": "2020-09-02 09:35:01",
+    "updatedAt": "2020-09-03 06:17:14"
+  },
+  {
+    "id": 1,
+    "userName": "blueberry",
+    "password": "$2b$12$Ok8MdSG/0QEcXm6gNzwpre0TcagNdnHLrMA1D2rfVzUmbiDuzogRS",
+    "email": "blue.berry@egg.com",
+    "phoneNumber": "010-9999-9999",
+    "fullName": "수정할꾸야",
+    "imageUrl": null,
+    "content": "블루베리는 내용을 수정하였지욥",
+    "secretMode": 1,
+    "deletedAt": null,
+    "createdAt": "2020-09-02 09:35:01",
+    "updatedAt": "2020-09-03 06:17:14"
+  },
+  false
+]

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as css from 'styles/theme';
 import styled from 'styled-components';
-import defaultAvatarImage from 'public/static/images/zuzu/zuzu.jpg';
+import { BASIC_USER_AVATAR } from 'common/config';
 
 // ! 스토리 있을때 아바타에 빨간 줄 긋기
 type Size = 'medium' | 'large' | 'small';
@@ -15,13 +15,18 @@ const Avatar: React.FC<AvatarProps> = ({
   card = 'small',
   children,
   size = 'medium',
-  url = defaultAvatarImage,
+  url = BASIC_USER_AVATAR,
 }) => {
   // console.log({ size, url });
   return (
     <Div>
       <Container size={size}>
-        <UserImage size={size} src={url}></UserImage>
+        {typeof url === 'string' && (
+          <UserImage size={size} src={url}></UserImage>
+        )}
+        {url === null && (
+          <UserImage size={size} src={BASIC_USER_AVATAR}></UserImage>
+        )}
       </Container>
       {children && <UserName mode={card}>{children}</UserName>}
     </Div>

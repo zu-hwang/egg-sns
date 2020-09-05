@@ -2,21 +2,22 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
 dotenv.config();
-const createJWT = (userId) => {
+const create = (userId) => {
   try {
     return jwt.sign({ id: userId }, process.env.SECRET_KEY, {
       algorithm: process.env.ALGORITHM,
     });
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
-const decodeJWT = (token) => {
+const decode = (token) => {
   try {
     return jwt.verify(token, process.env.SECRET_KEY, {
       algorithm: process.env.ALGORITHM,
-    });
+    }).id;
   } catch (error) {
     console.log(error);
   }
@@ -28,6 +29,6 @@ const decodeJWT = (token) => {
  */
 
 module.exports = {
-  createJWT,
-  decodeJWT,
+  create,
+  decode,
 };

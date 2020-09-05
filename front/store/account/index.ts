@@ -6,17 +6,13 @@ export const REQUEST_SIGN_UP = 'account/REQUEST_SIGN_UP';
 export const REQUEST_USER_DATA = 'account/REQUEST_USER_DATA';
 export const REQUEST_INPUT_VALID = 'account/REQUEST_INPUT_VALID';
 export const REQUEST_COOKIE_EXPIRY = 'account/REQUEST_COOKIE_EXPIRY';
-
 export const SUCCESS_SIGN_UP = 'account/SUCCESS_SIGN_UP';
 export const SUCCESS_LOG_IN = 'account/SUCCESS_LOG_IN';
 export const SUCCESS_LOG_OUT = 'account/SUCCESS_LOG_OUT';
-
 export const FAILURE_SIGN_UP = 'account/FAILURE_SIGN_UP';
 export const FAILURE_LOG_IN = 'account/FAILURE_LOG_IN';
-
 export const RESET_SUCCESS = 'account/RESET_SUCCESS';
 export const UPDATE_USER_DATA = 'account/UPDATE_USER_DATA';
-
 export const SET_LOADING = 'account/SET_LOADING';
 export const SET_VALID_MASSAGE_ = 'account/SET_VALID_MASSAGE_';
 export const SET_VALID_MASSAGE_EMAIL = 'account/SET_VALID_MASSAGE_EMAIL';
@@ -29,29 +25,41 @@ export const SET_VALID_MASSAGE_PHONENUMBER =
   'account/SET_VALID_MASSAGE_PHONENUMBER';
 
 // 1. 회원가입 요청 > 요청
+interface RequestSignUpProps {
+  userName: string;
+  password: string;
+  fullName: string;
+  email?: string;
+  phoneNumber?: string;
+  contact?: string;
+}
 export const requestSignUp = (
-  bodyData: egg.RequestSignUpData,
-): egg.ReturnRequestSignUp => {
-  return { type: REQUEST_SIGN_UP, payload: bodyData };
-};
+  bodyData: RequestSignUpProps,
+): egg.ReturnRequestSignUp => ({
+  type: REQUEST_SIGN_UP,
+  payload: bodyData,
+});
 
 // 2. 비동기 진행중 상태값 isLoging
-export const setLoading = (bool: boolean): egg.ReturnSetLoading => {
-  return { type: SET_LOADING, payload: bool };
-};
+
+export const setLoading = (bool: boolean): egg.ReturnSetLoading => ({
+  type: SET_LOADING,
+  payload: bool,
+});
 
 // 4. 회원가입 실패시 상태코드/에러메세지 상태값에 저장
-export const setSignUpError = (payload: {
+interface SetSignUpErrorProps {
   code: number | null;
   message: egg.InputErrorMessage | null;
-}): egg.ReturnSetSignUpError => {
-  return { type: FAILURE_SIGN_UP, payload };
-};
+}
+export const setSignUpError = (
+  payload: SetSignUpErrorProps,
+): egg.ReturnSetSignUpError => ({ type: FAILURE_SIGN_UP, payload });
 
 // 5. 회원가입 성공
-export const successSignUp = (): egg.ReturnSuccessSignUp => {
-  return { type: SUCCESS_SIGN_UP };
-};
+export const successSignUp = (): egg.ReturnSuccessSignUp => ({
+  type: SUCCESS_SIGN_UP,
+});
 
 // 6. 로그인
 export const successLogIn = (): egg.ReturnSuccessLogIn => {

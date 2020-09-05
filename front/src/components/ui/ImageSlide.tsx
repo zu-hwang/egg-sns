@@ -5,39 +5,45 @@ import heart from 'public/static/images/svg/heart.svg';
 import comment from 'public/static/images/svg/comment.svg';
 import send from 'public/static/images/svg/send.svg';
 import bookmark from 'public/static/images/svg/bookmark.svg';
-
+import { STATIC_URL } from 'common/config';
 interface ImageSlideProps {
-  feedImage: Array<string>;
+  feedImage: string[];
 }
 const ImageSlide: React.FC<ImageSlideProps> = ({ feedImage }) => {
   return (
-    <>
-      {feedImage.map((image, index) => {
-        return (
-          <div key={index}>
-            {/* 여기에 슬라이드 구현 */}
-            <Image src={image} />
-            <Divider />
-            <IconBox>
-              <div>
-                <Icon src={heart} />
-                <Icon src={comment} />
-                <Icon src={send} />
-              </div>
-              <div>
-                <Icon src={bookmark} />
-              </div>
-            </IconBox>
-          </div>
-        );
-      })}
-    </>
+    <Container>
+      {feedImage.length > 0 &&
+        feedImage.map((image, index) => {
+          return (
+            <div key={index}>
+              {/* 여기에 슬라이드 구현 */}
+              <Image src={STATIC_URL + image} />
+              <Divider />
+              <IconBox>
+                <div>
+                  <Icon src={heart} />
+                  <Icon src={comment} />
+                  <Icon src={send} />
+                </div>
+                <div>
+                  <Icon src={bookmark} />
+                </div>
+              </IconBox>
+            </div>
+          );
+        })}
+    </Container>
   );
 };
-
+const Container = styled.div`
+  width: 600px;
+  height: 600px;
+  overflow: hidden;
+`;
 const Image = styled.img`
   display: block;
   width: 100%;
+  height: 100%;
   margin-right: 25px;
   &:last-child {
     margin-right: 0;

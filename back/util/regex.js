@@ -8,11 +8,12 @@ const userNameRule = /^(?=.*[a-z])(?!.*\.\.)(?!.*\.$)[a-z0-9._]{0,20}$/;
 // export const usernameRule = /^(?=.*[a-z])[a-z0-9._]{2,20}$/i;
 // 비밀번호 : 8~15자리 + 특수문자, 영어대소문자, 숫자 포함 형태
 const passwordRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-
+const hashtagRule = /#[^\s#]+/gi;
 module.exports = {
   emailRule,
   phoneNumberRule,
   fullNameRule,
   userNameRule,
   passwordRule,
+  hashtagRule,
 };

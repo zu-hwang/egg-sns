@@ -7,10 +7,13 @@ import UserNameBox from 'src/components/ui/UserNameBox';
 
 interface FeedHeaderProps {
   author: string;
-  authorImage: string;
+  authorImage: string | null;
 }
 
-const FeedHeader: React.FC<FeedHeaderProps> = ({ author, authorImage }) => {
+const FeedHeader: React.FC<FeedHeaderProps> = ({
+  author,
+  authorImage = '',
+}) => {
   return (
     <UserInfoBox>
       <div>
