@@ -2,26 +2,7 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Relation extends Model {
-    static associate(models) {
-      this.belongsTo(models.User, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        as: 'Target',
-        foreignKey: {
-          name: 'followerId',
-          allowNull: false,
-        },
-      });
-      this.belongsTo(models.User, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        as: 'Follower',
-        foreignKey: {
-          name: 'targetId',
-          allowNull: false,
-        },
-      });
-    }
+    static associate(models) {}
   }
   Relation.init(
     {

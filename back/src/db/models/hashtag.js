@@ -6,25 +6,13 @@ module.exports = (sequelize, DataTypes) => {
       /**
        * 다:다 - FeedHashtag, CommentHashtag
        */
-      this.hasMany(models.HashtagComment, {
-        foreignKey: 'hashtagId',
-      });
-      this.hasMany(models.HashtagFeed, {
-        foreignKey: 'hashtagId',
-      });
       this.belongsToMany(models.Feed, {
         through: 'HashtagFeed',
-        foreignKey: 'hashtagId',
-        // allowNull: false,
-        // onDelete: 'CASCADE',
-        // constraints: false,
+        foreignKey: { name: 'hashtagId', allowNull: false },
       });
       this.belongsToMany(models.Comment, {
         through: 'HashtagComment',
-        foreignKey: 'hashtagId',
-        // allowNull: false,
-        // onDelete: 'CASCADE',
-        // constraints: false,
+        foreignKey: { name: 'hashtagId', allowNull: false },
       });
     }
   }

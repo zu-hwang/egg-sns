@@ -12,48 +12,59 @@ module.exports = (sequelize, DataTypes) => {
        * as : 모델명(대문자+카멜)
        * foreignKey : 컬럼명(소문자+카멜)
        * throuth : 기본 테이블명(소문자+복수) or 모델 직접구현 > 모댈명(대문자+카멜)
-       *
+       * allowNull:false -> onDelete :'CASCADE', -> constraints: false,
        */
       this.hasMany(models.Feed, {
-        foreignKey: 'authorId' /*  allowNull: false, onDelete: 'CASCADE'  */,
+        foreignKey: {
+          name: 'authorId',
+          allowNull: false,
+        },
       });
       this.hasMany(models.Comment, {
-        foreignKey: 'authorId' /*  allowNull: false, onDelete: 'CASCADE'  */,
-      });
-      this.hasMany(models.UserFeed, {
-        foreignKey: 'userId',
-      });
-      this.hasMany(models.HashtagFeed, {
-        foreignKey: 'followerId',
-      });
-      this.hasMany(models.HashtagFeed, {
-        foreignKey: 'targetId',
+        foreignKey: {
+          name: 'authorId',
+          allowNull: false,
+        },
       });
       this.belongsToMany(models.Feed, {
         through: 'UserFeed',
-        foreignKey: 'userId',
+        as: 'FeedLike',
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
       });
       this.belongsToMany(models.Comment, {
         through: 'UserComment',
-        foreignKey: 'userId',
+        as: 'CommentLike',
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
       });
 
       this.belongsToMany(this, {
-        // this = Follower, 상대 User 모델은 Target으로 칭함(Following)
+        // models.User = Follower, 상대 User 모델은 Target으로 칭함(Following)
         as: 'Target',
         through: 'Relation',
-        foreignKey: 'FollowerId',
+        foreignKey: { name: 'followerId', allowNull: false },
       });
       this.belongsToMany(this, {
         // models.User = Target, 상대 User 모델은 Follower으로 칭함
         as: 'Follower',
         through: 'Relation',
-        foreignKey: 'TargetId',
+        foreignKey: { name: 'targetId', allowNull: false },
       });
     }
   }
   User.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        unique: true,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       userName: {
         type: DataTypes.STRING(20),
         allowNull: false,

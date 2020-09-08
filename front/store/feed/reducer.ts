@@ -3,7 +3,7 @@ import * as egg from 'store/types';
 import * as feed from 'store/feed/';
 
 export const initialState: egg.Feed = {
-  modalNewFeed: true,
+  modalNewFeed: false,
   uplodedImages: [],
 };
 

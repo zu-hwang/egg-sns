@@ -13,6 +13,8 @@ const errorHandler = require('./middleware/errorHandler');
 const accountRouter = require('./routes/account');
 const feedRouter = require('./routes/feed');
 const uploadRouter = require('./routes/upload');
+const feedsRouter = require('./routes/feeds');
+const relationRouter = require('./routes/relation');
 
 dotenv.config();
 const app = express();
@@ -62,6 +64,8 @@ app.get('/', (req, res) => {
 app.use('/account', accountRouter);
 app.use('/feed', feedRouter);
 app.use('/upload', uploadRouter);
+app.use('/feeds', feedsRouter);
+app.use('/relation', relationRouter);
 
 // 에러 핸들러
 app.use(errorHandler);

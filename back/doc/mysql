@@ -1,3 +1,0 @@
-// 유저 테이블 보기
-SELECT id, userName, email, phoneNumber, fullName, imageUrl, content,logoutedAt FROM users;
-SELECT id, userName, email, phoneNumber, fullName, imageUrl, content, createdAt, updatedAt FROM users;

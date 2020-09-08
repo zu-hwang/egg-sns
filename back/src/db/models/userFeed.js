@@ -3,24 +3,7 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class UserFeed extends Model {
-    static associate(models) {
-      this.belongsTo(models.Feed, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        foreignKey: {
-          name: 'feedId',
-          allowNull: false,
-        },
-      });
-      this.belongsTo(models.User, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        foreignKey: {
-          name: 'userId',
-          allowNull: false,
-        },
-      });
-    }
+    static associate(models) {}
   }
   UserFeed.init(
     {
