@@ -2,24 +2,7 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class HashtagComment extends Model {
-    static associate(models) {
-      this.belongsTo(models.Comment, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        foreignKey: {
-          name: 'commentId',
-          allowNull: false,
-        },
-      });
-      this.belongsTo(models.Hashtag, {
-        onDelete: 'CASCADE',
-        constraints: false,
-        foreignKey: {
-          name: 'hashtagId',
-          allowNull: false,
-        },
-      });
-    }
+    static associate(models) {}
   }
   HashtagComment.init(
     {

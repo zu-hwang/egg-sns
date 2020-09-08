@@ -27,11 +27,13 @@ package-lock.json
 
 
 # common  --------------------------------------------
-md
+doc
+etc
 # frontend  ------------------------------------------
 .next
 
 # backend  -------------------------------------------
+uploads
 .env
 back/doc
 back/md

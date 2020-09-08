@@ -8,10 +8,9 @@ const common = {
   charset: 'utf8mb4',
   collate: 'utf8mb4_general_ci',
   logging: true,
-  query: {
-    raw: true,
-  },
-  underscored: false,
+  // query: {
+  //   raw: true, // ! 이 옵션 넣으면 result.get에러 발생! 절대 넣지말기^^
+  // },
   dialectOptions: {
     useUTC: true, //for reading from database
     dateStrings: true, // ! 데이터 로드시 문자열로 가저옴

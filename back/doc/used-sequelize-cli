@@ -1,2 +1,0 @@
-// user 생성
-npx sequelize model:generate --name User --attributes userName:string,password:string,email:string,phoneNumber:string,fullName:string,imageUrl:string,content:text;

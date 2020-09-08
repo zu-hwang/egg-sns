@@ -8,43 +8,39 @@ module.exports = (sequelize, DataTypes) => {
        * 1:다 - 다 : Image,
        * 다:다 - UserFeedLike, FeedHashtags
        */
-      this.belongsTo(models.User, {
-        // constraints: false,
-        onDelete: 'CASCADE',
-        as: 'Author',
-        foreignKey: {
-          name: 'authorId',
-          allowNull: false,
-        },
-      });
-      this.hasMany(models.Image, {
-        foreignKey: {
-          name: 'feedId',
-          allowNull: false,
-        } /* onDelete: 'CASCADE', allowNull: false  */,
-      });
+      this.hasMany(models.Image);
       this.hasMany(models.Comment, {
         foreignKey: {
           name: 'feedId',
           allowNull: false,
         },
       });
-      this.hasMany(models.UserFeed, {
-        foreignKey: 'feedId',
-      });
-      this.hasMany(models.HashtagFeed, {
-        foreignKey: 'feedId',
+      this.belongsTo(models.User, {
+        as: 'Author',
+        foreignKey: {
+          name: 'authorId',
+          allowNull: false,
+        },
       });
       this.belongsToMany(models.User, {
         through: 'UserFeed',
-        foreignKey: 'feedId',
-        // allowNull: false,
+        as: 'FeedLike',
+        foreignKey: {
+          name: 'feedId',
+          allowNull: false,
+        },
         // onDelete: 'CASCADE',
       });
       this.belongsToMany(models.Hashtag, {
         through: 'HashtagFeed',
-        foreignKey: 'feedId',
+        foreignKey: { name: 'feedId', allowNull: false },
       });
+      /**
+       * 중간테이블
+       */
+      // this.hasMany(models.UserFeed, {
+      //   foreignKey: 'feedId',
+      // });
     }
   }
   Feed.init(

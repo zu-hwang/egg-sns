@@ -9,6 +9,7 @@ const models = require('../src/db/models');
 const { hashtagRule } = require('../util/regex');
 const { isLogined } = require('../middleware/accountLogin');
 const { imageUrl } = require('../util/inputValidation');
+const { sequelize } = require('../src/db/models');
 const API = {
   create: '/create',
 };
@@ -52,27 +53,7 @@ router.post(API.create, isLogined, async (req, res, next) => {
      */
     const images = await Promise.all(
       uplodedImages.map(async (url) => {
-        // const [uploads, date, fileNameExt] = url.split('/'); // [uploads, YYYYMMDD, filename.ext]
-        // const newPath = path.join(uploads, 'used', date); // uploads/used/YYYYMMDD
-        // const finallPath = newPath + fileNameExt;
-        // try {
-        //   // 오늘자 사용이미지 폴더 있는지 확인
-        //   fs.accessSync(newPath, { recursive: true });
-        // } catch (error) {
-        //   // 오늘자 사용이미지 폴더 생성
-        //   fs.mkdirSync(newPath, { recursive: true });
-        // } finally {
-        //   fs.copyFileSync(
-        //     // 이미지 복사
-        //     url, // 현재위치
-        //     finallPath, // 복사할 위치
-        //     // COPYFILE_EXCL, // 옵션
-        //   );
-        // }
-        /**
-         * 이미지 인스턴스 생성
-         */
-        console.log({ url, newFeedId: newFeed.id });
+        // console.log({ url, newFeedId: newFeed.id });
         const createdImage = await models.Image.create({
           url: url,
           feedId: newFeed.id,
@@ -84,19 +65,16 @@ router.post(API.create, isLogined, async (req, res, next) => {
     );
     await newFeed.addImages([...images]);
     console.log('등록된 이미지 : ', await newFeed.countImages());
-    //! raw옵션으로 성공,..ㅠㅠ.ㅠ 이게 아닌뎅----------------
     const finalFeed = await models.Feed.findOne({
       where: { id: newFeed.id },
       attributes: ['id', 'content', 'createdAt'],
-      raw: true, // 로우 옵션을 안주면 내용이 안나오고
-      nest: true, // 로우 옵션은 네스팅 무시함으로 네스트 설정해줘야하고
+      /**
+       * plain: false -> 결과값의 배열읠 단순화 하여 보여줌
+       * raw: true    -> 시퀄라이즈 설정에서 query:{raw:true} 했을 경우 이 옵션을 꼭 넣어줘야 하며
+       *                 시퀄라이즈 리턴값을 객체로 변형하여 보여준다.. 문제는 hasMany의 배열값도 객체로 단일화 해버린다는 것 !
+       * nest : true  -> 객체를 계층화 하여 보여준다. raw 옵션과는 항상 쌍으로 다닌다
+       */
       include: [
-        { model: models.Image, attributes: ['id', 'url'] },
-        // { model: models.Hashtag }, // 검색할때 사용
-        {
-          model: models.User /* FeedLiker */,
-          attributes: ['id'],
-        }, // 모든 정보가 와버림..
         {
           // 피드작성자
           model: models.User,
@@ -104,7 +82,17 @@ router.post(API.create, isLogined, async (req, res, next) => {
           attributes: ['id', 'userName', 'imageUrl'],
         },
         {
-          // 코멘트 작성자
+          model: models.Image,
+          attributes: ['id', 'url'],
+        },
+        {
+          model: models.User /* FeedLiker */,
+          as: 'FeedLike',
+          attributes: ['id'],
+          // 내가 좋아하는 게시글인지 boolean
+          // 총 좋아요 count
+        },
+        {
           model: models.Comment,
           attributes: ['id', 'content', 'createdAt'],
           include: [
@@ -113,33 +101,16 @@ router.post(API.create, isLogined, async (req, res, next) => {
               as: 'Author',
               attributes: ['id', 'userName'],
             },
+            {
+              model: models.User,
+              as: 'CommentLike',
+              attributes: ['id'],
+            },
           ],
         },
       ],
     });
-    //! ----------------------------------------------------------------
-    // console.log({ dma: await newFeed.getImages() });
-
-    console.log(images.length);
-    const result = {
-      feed: {
-        id: finalFeed.id,
-        author: finalFeed.Author,
-        content: finalFeed.content,
-        image: await images.map((img) => {
-          return {
-            id: img.id,
-            url: img.url,
-            feedId: img.feedId,
-          };
-        }),
-        comments: [],
-        likes: finalFeed.Users.UserFeed,
-        createdAt: finalFeed.createdAt,
-      },
-    };
-    console.log({ finalFeed, result });
-
+    console.log(finalFeed);
     return res.status(200).json(finalFeed);
   } catch (error) {
     console.log(error);
