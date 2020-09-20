@@ -2,90 +2,98 @@ import * as React from 'react';
 import * as css from 'styles/theme';
 import * as redux from 'src/hooks/customRedux';
 import * as antd from '@ant-design/icons';
+// import * as egg from 'store/types';
 import * as feed from 'store/feed/';
 import styled from 'styled-components';
 import FeedHeader from 'src/components/feedCard/FeedHeader';
-import ImageSlideSimple from 'src/components/ui/ImageSlideSimple';
+import Alert from 'src/components/ui/Alert';
+import ImageUpload from 'src/components/ui/ImageUpload';
 interface INewFeed {
   onClick: () => void;
 }
 const NewFeed: React.FC<INewFeed> = (props) => {
-  const inputFile = React.useRef(null);
+  const MAX = 3;
+  const inputFile = React.useRef<HTMLInputElement>(null);
   const dispatch = redux.useDispatch();
   const [content, setContent] = React.useState('');
-  const uplodedImages = redux.useSelector((s) => {
-    // console.log(s.feed);
-    console.log('업로드이미지', s.feed.uplodedImages);
-    return s.feed.uplodedImages;
-  });
+  const modalNewFeed = redux.useSelector((s) => s.feed.modalNewFeed);
+  const successNewFeed = redux.useSelector((s) => s.feed.successNewFeed);
+  const uploadedImages = redux.useSelector((s) => s.feed.uploadedImages);
+  const newFeedAlert = redux.useSelector((s) => s.feed.newFeedAlert);
+  const loading = redux.useSelector((s) => s.feed.loading);
   const user = redux.useSelector((s) => s.account.user);
   const onChangeUploadImage = (e) => {
     const formData = new FormData();
-    const MAX = 2;
-    if (e.target.files.length > MAX) {
-      alert(`${MAX}개 이미지 업로드 가능합니다!`);
-      console.dir(e.target);
+    if (e.target.files.length + uploadedImages.length > MAX) {
+      alert(`최대 ${MAX}개 이미지 업로드 가능합니다!`);
       e.target.form.reset();
     } else {
-      // 10개 이하일때만 패치
       // 유사배열형태인 files에 배열메서드 쓰기위해 아래처럼 작성
       [].forEach.call(e.target.files, (file, index) => {
-        if (index < MAX) formData.append('feedImages', file);
+        if (index < MAX) formData.append('addImages', file);
       });
       dispatch(feed.requestUploadImage(formData));
     }
   };
-  const onButtonClick = () => {
-    inputFile.current.click();
-  };
-  React.useEffect(() => {}, [uplodedImages]);
-  console.log({ uplodedImages });
+  const onButtonClick = React.useCallback(() => {
+    if (inputFile && inputFile.current) {
+      // Ref객체가 null이 아닐때 실행되도록 분기
+      inputFile.current.click();
+    }
+  }, [inputFile]);
+  React.useEffect(() => {}, [uploadedImages]);
   const onSubmitFeed = () => {
-    //
-    const data = {
-      content: content,
-      uplodedImages: uplodedImages,
-    };
-    dispatch(feed.requestNewFeed(data));
+    if (content.length > 0 && uploadedImages.length > 0) {
+      const data = {
+        content: content,
+        uploadedImages: uploadedImages,
+      };
+      dispatch(feed.requestNewFeed(data));
+    } else {
+      dispatch(feed.setAlertAutoOn('newFeed')); // 경고창 3초후 꺼짐
+    }
   };
   const onChangeContent = (e) => {
-    console.log(e.target.value);
     setContent(e.target.value);
   };
+
+  React.useEffect(() => {
+    if (successNewFeed) dispatch(feed.setModalNewFeed(false));
+  }, [successNewFeed]);
   return (
     <>
-      {user !== null && (
-        <FullScreen>
+      {modalNewFeed && user !== null && (
+        <FullScreen onOff={modalNewFeed}>
           <Wapper>
             <LeftOutlined />
             <RightOutlined />
             <Container>
               <LightBox>
-                {uplodedImages.length === 0 ? (
-                  <form
-                    method='post'
-                    encType='multipart/form-data'
-                    name='feedImages'>
-                    <UploadBtn>
-                      <div onClick={onButtonClick}>
-                        <antd.PlusOutlined />
-                        <span>사진 업로드</span>
-                      </div>
-                    </UploadBtn>
-                    <UploadImgButton
-                      ref={inputFile}
-                      multiple
-                      type='file'
-                      accept='image/jpg,impge/png,image/jpeg,image/gif'
-                      name='feedImages' // 백에서 받을때 사용할 이름
-                      onChange={onChangeUploadImage}
-                    />
-                  </form>
+                <form
+                  method='post'
+                  encType='multipart/form-data'
+                  name='addImages'>
+                  <UploadImgButton
+                    ref={inputFile}
+                    multiple
+                    type='file'
+                    accept='image/jpg,image/png,image/jpeg,'
+                    name='addImages' // 백에서 받을때 사용할 이름
+                    onChange={onChangeUploadImage}
+                  />
+                </form>
+                {uploadedImages.length === 0 ? (
+                  <UploadBtn>
+                    <div onClick={onButtonClick}>
+                      <antd.PlusOutlined />
+                      <span>사진 업로드</span>
+                    </div>
+                  </UploadBtn>
                 ) : (
-                  <ImageSlideSimple feedImage={uplodedImages} />
+                  <ImageUpload MAX={MAX} onClick={onButtonClick} />
                 )}
               </LightBox>
-              <RightBox uplodedImages={uplodedImages}>
+              <RightBox uploadedImages={uploadedImages}>
                 <div>
                   <FeedHeader
                     author={user.userName}
@@ -97,9 +105,16 @@ const NewFeed: React.FC<INewFeed> = (props) => {
                   value={content}
                   onChange={onChangeContent}
                 />
-                <Button onClick={onSubmitFeed}>전송</Button>
+                <Button onClick={onSubmitFeed}>
+                  {loading ? <LoadingOutlined /> : '전송'}
+                </Button>
               </RightBox>
             </Container>
+            {newFeedAlert && (
+              <AlertWrapper>
+                <Alert>사진과 게시글을 작성해주세요 😊</Alert>
+              </AlertWrapper>
+            )}
           </Wapper>
           <CloseOutlined onClick={props.onClick} />
         </FullScreen>
@@ -108,9 +123,9 @@ const NewFeed: React.FC<INewFeed> = (props) => {
   );
 };
 
-const FullScreen = styled.div`
+const FullScreen = styled.div<{ onOff: boolean }>`
   position: relative;
-  z-index: 1;
+  z-index: ${({ onOff }) => (onOff ? 1 : -1)};
   ${css.flexCenter}
   position:fixed;
   top: 0;
@@ -118,7 +133,7 @@ const FullScreen = styled.div`
   width: 100vw;
   height: 100vh;
   border: 1px solid ${({ theme }) => theme.border};
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.divider}; /* or 투명 */
 `;
 const Container = styled.div`
   overflow: hidden;
@@ -149,7 +164,7 @@ const RightOutlined = styled(antd.RightOutlined)`
   right: -60px;
   font-size: 24px;
 `;
-const RightBox = styled.div<{ uplodedImages: string[] }>`
+const RightBox = styled.div<{ uploadedImages: string[] }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -157,8 +172,8 @@ const RightBox = styled.div<{ uplodedImages: string[] }>`
   min-width: 335px;
   width: 335px;
   height: 100%;
-  ${({ uplodedImages }) =>
-    uplodedImages.length === 0
+  ${({ uploadedImages }) =>
+    uploadedImages.length === 0
       ? `height:600px;`
       : `height:auto;max-heignt:600px;`}
   border-left: 1px solid ${({ theme }) => theme.border};
@@ -191,7 +206,8 @@ const UploadImgButton = styled.input`
 `;
 const Button = styled.button`
   width: 100%;
-  padding: 10px 16px;
+  /* padding: 10px 16px; */
+  height: 54px;
   color: ${({ theme }) => theme.primaryText};
   ${css.fontBold}
   border-top: 1px solid ${({ theme }) => theme.border};
@@ -199,6 +215,9 @@ const Button = styled.button`
     cursor: pointer;
     background-color: ${({ theme }) => theme.background};
   }
+`;
+const LoadingOutlined = styled(antd.LoadingOutlined)`
+  font-size: 16px;
 `;
 const CloseOutlined = styled(antd.CloseOutlined)`
   position: absolute;
@@ -218,5 +237,11 @@ const TextField = styled.textarea`
   font-size: 14px;
   padding: 10px;
   border-top: 1px solid ${({ theme }) => theme.border};
+`;
+
+const AlertWrapper = styled.div`
+  position: absolute;
+  bottom: 60px;
+  right: 18px;
 `;
 export default NewFeed;

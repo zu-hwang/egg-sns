@@ -7,7 +7,7 @@ dotenv.config();
 const common = {
   charset: 'utf8mb4',
   collate: 'utf8mb4_general_ci',
-  logging: true,
+  logging: console.log,
   // query: {
   //   raw: true, // ! 이 옵션 넣으면 result.get에러 발생! 절대 넣지말기^^
   // },

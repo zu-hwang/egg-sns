@@ -3,8 +3,8 @@ import * as css from 'styles/theme';
 import styled from 'styled-components';
 
 interface UserNameBoxProps {
-  username: string;
-  content?: string;
+  username?: string | null;
+  content?: string | null;
 }
 const UserNameBox: React.FC<UserNameBoxProps> = ({ username, content }) => {
   return (
@@ -13,6 +13,11 @@ const UserNameBox: React.FC<UserNameBoxProps> = ({ username, content }) => {
       {content && <ContentOrHashTag>{content}</ContentOrHashTag>}
     </Container>
   );
+};
+
+UserNameBox.defaultProps = {
+  username: '',
+  content: '',
 };
 
 const Container = styled.div`
@@ -32,6 +37,9 @@ const ContentOrHashTag = styled.p`
   font-weight: normal;
   color: ${(props) => props.theme.midtoneText};
   margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default UserNameBox;

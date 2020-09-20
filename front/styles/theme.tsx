@@ -1,4 +1,5 @@
 import baseStyled, { css, ThemedStyledInterface } from 'styled-components';
+export { css } from 'styled-components';
 export const response = {
   // desktop:1167,
   web: 975,

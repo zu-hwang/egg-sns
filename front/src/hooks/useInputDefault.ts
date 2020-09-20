@@ -3,8 +3,9 @@ import * as React from 'react';
 export type KeyNameProps = 'userId' | 'password';
 
 export const useInputDefault = (
-  initialValue: string,
+  initialValue: string | undefined,
 ): [string, (e: any) => void, React.Dispatch<React.SetStateAction<string>>] => {
+  if (!initialValue) initialValue = '';
   const [value, setValue] = React.useState(initialValue);
   const handleOnChange = React.useCallback((e: any) => {
     setValue(e.target.value);

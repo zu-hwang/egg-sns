@@ -4,13 +4,23 @@ import styled from 'styled-components';
 import image from 'src/data/loginPageImageUrl';
 import IconSprite from 'src/components/ui/IconSprite';
 
-const TabMenu: React.FC = () => {
+interface ITabMenu {
+  tabSelected: 'feed' | 'igtv' | 'saved' | 'taged';
+  onClick: (e) => void;
+}
+
+const TabMenu: React.FC<ITabMenu> = ({ onClick, tabSelected }) => {
   // 탭메뉴를 state로 관리해야 하나...?
   return (
     <LocalNav>
       <Ul>
-        <Li>
+        {/* 클릭 -> 리듀서 state변경 */}
+        <Li
+          active={tabSelected === 'feed' ? true : false}
+          data-tabname={'feed'}
+          onClick={onClick}>
           <IconSprite
+            data-tabname={'feed'}
             url={image.iconSprite}
             iconSize={[13, 13]}
             imageSize={[912 / 2, 860 / 2]}
@@ -18,8 +28,12 @@ const TabMenu: React.FC = () => {
           />
           게시물
         </Li>
-        <Li>
+        <Li
+          active={tabSelected === 'igtv' ? true : false}
+          data-tabname={'igtv'}
+          onClick={onClick}>
           <IconSprite
+            data-tabname={'igtv'}
             url={image.iconSprite}
             iconSize={[13, 13]}
             imageSize={[912 / 2, 860 / 2]}
@@ -27,8 +41,12 @@ const TabMenu: React.FC = () => {
           />
           IGTV
         </Li>
-        <Li>
+        <Li
+          active={tabSelected === 'saved' ? true : false}
+          data-tabname={'saved'}
+          onClick={onClick}>
           <IconSprite
+            data-tabname={'saved'}
             url={image.iconSprite}
             iconSize={[13, 13]}
             imageSize={[912 / 2, 860 / 2]}
@@ -36,8 +54,12 @@ const TabMenu: React.FC = () => {
           />
           저장됨
         </Li>
-        <Li>
+        <Li
+          active={tabSelected === 'taged' ? true : false}
+          data-tabname={'taged'}
+          onClick={onClick}>
           <IconSprite
+            data-tabname={'taged'}
             url={image.iconSprite}
             iconSize={[13, 13]}
             imageSize={[912 / 2, 860 / 2]}
@@ -59,7 +81,7 @@ const Ul = styled.ul`
   position: relative;
   ${css.flexCenter}
 `;
-const Li = styled.li`
+const Li = styled.li<{ active: boolean }>`
   ${css.flexCenter}
   justify-content:space-between;
   position: relative;
@@ -73,12 +95,17 @@ const Li = styled.li`
   border-top: 1px solid rgba(0, 0, 0, 0);
   color: ${({ theme }) => theme.primeryText};
   opacity: 0.5;
+  ${({ active, theme }) =>
+    active &&
+    `   
+      opacity: 1;
+      border-top: 1px solid ${theme.primaryText};
+  `}
   &:hover {
-    opacity: 1;
-    border-top: 1px solid ${({ theme }) => theme.primaryText};
-  }
-  &:active {
-    opacity: 1;
+    cursor: pointer;
+    /* opacity: 1;
+    border-top: 1px solid ${({ theme }) =>
+      theme.primaryText}; */
   }
 `;
 

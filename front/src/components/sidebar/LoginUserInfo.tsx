@@ -1,22 +1,31 @@
 import * as React from 'react';
 import * as css from 'styles/theme';
+import * as redux from 'src/hooks/customRedux';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
-import userImage from 'public/static/images/zuzu/zuzu.jpg';
 import UserNameBox from 'src/components/ui/UserNameBox';
 
-const userInfo = {
-  id: 1,
-  // username: '____hi_world_',
-  username: 'zuzu',
-  userImage: userImage,
-  content: '.... 🕳',
-};
-const LoginUserInfo: React.FC = ({}) => {
+// export interface User {
+//   id: number;
+//   userName: string;
+//   email: string | null;
+//   phoneNumber: string | null;
+//   fullName: string;
+//   imageUrl: string | null;
+//   content: string | null;
+//   secretMode: boolean;
+// }
+const LoginUserInfo: React.FC = () => {
+  const user = redux.useSelector((s) => s.account.user);
+
   return (
     <Container>
-      <Avatar url={userInfo.userImage} />
-      <UserNameBox username={userInfo.username} content={userInfo.content} />
+      {user !== null && user.imageUrl !== undefined && (
+        <Avatar url={user.imageUrl} />
+      )}
+      {user !== null && (
+        <UserNameBox username={user.userName} content={user.content} />
+      )}
     </Container>
   );
 };

@@ -8,20 +8,21 @@ router.use(cookieParser());
 const models = require('../src/db/models');
 const { hashtagRule } = require('../util/regex');
 const { isLogined } = require('../middleware/accountLogin');
-const { imageUrl } = require('../util/inputValidation');
-const { sequelize } = require('../src/db/models');
+const { finalResize } = require('../middleware/finalResize');
+const deleteIMG = require('../util/uploadImageDelete');
 const API = {
   create: '/create',
 };
 
-router.post(API.create, isLogined, async (req, res, next) => {
+router.post(API.create, isLogined, finalResize, async (req, res, next) => {
+  const userId = req.loginedUserId;
+  const content = req.body.content;
+  const finalUrls = req.body.finalUrls;
   try {
-    const userId = req.loginedUserId;
-    const content = req.body.content;
-    const uplodedImages = req.body.uplodedImages;
-    if ((!uplodedImages && uplodedImages.length === 0) || content.length < 0)
+    if ((!finalUrls && finalUrls.length === 0) || content.length < 0)
       return res.status(400).json({ message: 'requireDataEmpty' });
-    console.log({ 기본정보: { userId, content, uplodedImages } });
+
+    console.log({ 기본정보: { userId, content, finalUrls } });
     /**
      * 신규 피드
      */
@@ -52,7 +53,7 @@ router.post(API.create, isLogined, async (req, res, next) => {
      * 2. 이미지 모델 신규생성 > 1개일때, 여러개일때 나누어 로직 작성..? 그냥 다 배열로처리하믄 안댐??
      */
     const images = await Promise.all(
-      uplodedImages.map(async (url) => {
+      finalUrls.map(async (url) => {
         // console.log({ url, newFeedId: newFeed.id });
         const createdImage = await models.Image.create({
           url: url,
@@ -69,6 +70,7 @@ router.post(API.create, isLogined, async (req, res, next) => {
       where: { id: newFeed.id },
       attributes: ['id', 'content', 'createdAt'],
       /**
+       * ? raw/nest 설정은 콘솔에서 결과값 확인할때 좋음~!!
        * plain: false -> 결과값의 배열읠 단순화 하여 보여줌
        * raw: true    -> 시퀄라이즈 설정에서 query:{raw:true} 했을 경우 이 옵션을 꼭 넣어줘야 하며
        *                 시퀄라이즈 리턴값을 객체로 변형하여 보여준다.. 문제는 hasMany의 배열값도 객체로 단일화 해버린다는 것 !
@@ -83,17 +85,17 @@ router.post(API.create, isLogined, async (req, res, next) => {
         },
         {
           model: models.Image,
-          attributes: ['id', 'url'],
+          attributes: ['id', 'url', 'category'],
         },
         {
           model: models.User /* FeedLiker */,
           as: 'FeedLike',
           attributes: ['id'],
           // 내가 좋아하는 게시글인지 boolean
-          // 총 좋아요 count
         },
         {
           model: models.Comment,
+          order: [['id', 'DESC']], // id 기준 나열 최신 === 숫자큼
           attributes: ['id', 'content', 'createdAt'],
           include: [
             {
@@ -110,11 +112,31 @@ router.post(API.create, isLogined, async (req, res, next) => {
         },
       ],
     });
-    console.log(finalFeed);
-    return res.status(200).json(finalFeed);
+    /**
+     * DB 업데이트 완료 후 resize, origin 폴더의 파일 제거
+     */
+
+    return res.status(200).json({ message: 'success', newFeed: finalFeed });
   } catch (error) {
+    /**
+     * 문제가 생겼을 경우
+     * > orign/resize/final 폴더의 모든 이미지 제거
+     */
+    finalUrls.forEach((url) => {
+      deleteIMG.origin(url);
+      deleteIMG.resize(url);
+      deleteIMG.final(url);
+    });
     console.log(error);
-    next();
+    return res.status(500).json({ message: 'serverError' });
+  } finally {
+    /**
+     * 정상 처리 후 origin/resize 폴더의 이미지 제거
+     */
+    finalUrls.forEach((url) => {
+      deleteIMG.origin(url);
+      deleteIMG.resize(url);
+    });
   }
 });
 

@@ -19,7 +19,7 @@ const Container = styled.div`
   position: relative;
   width: 215px;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 2px;
+  border-radius: 3px;
   padding: 2px;
   overflow: hidden;
   background-color: ${(props) => props.theme.tableHeader};
@@ -59,8 +59,8 @@ const InputBox = styled.div`
 const Input = styled.input`
   ${css.font}
   font-size: 12px;
-  width: 83%;
-  padding: 5px 7px;
+  width: 100%;
+  padding: 5px 7px 5px 25px;
   position: relative;
   outline: none;
   border: none;

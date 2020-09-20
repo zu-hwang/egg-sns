@@ -25,7 +25,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "downlevelIteration": true
   },
   "exclude": [
     "node_modules",
@@ -40,7 +41,8 @@
     "costom.d.ts",
     "./store/types.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "sample.js"
   ]
   // "typesRoots": ["./store/types.d.ts"]
 }

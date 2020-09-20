@@ -1,35 +1,25 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const cookieParser = require('cookie-parser');
-
+// const cookieParser = require('cookie-parser');
 const jwt = require('../util/jwt');
 const validation = require('../util/inputValidation');
-const { Op, Sequelize } = require('sequelize');
+const { Op } = require('sequelize');
 const { User } = require('../src/db/models');
 const { defaultOption, expiresOption } = require('../util/cookieSetting');
 const { isLogined, isNotLogined } = require('../middleware/accountLogin');
 const { profileInspactor } = require('../middleware/profileInspactor');
 const valid = require('../middleware/validation');
+
 const router = express.Router();
-router.use(cookieParser());
+// router.use(cookieParser());
 
 const COOKIE = 'egg-sns-token';
 const COOKIE_EXPIRY = 'egg-sns-token-expiry';
-const API = {
-  user: '/user',
-  update: '/update',
-  logout: '/log-out',
-  login: '/sign-in',
-  signup: '/sign-up',
-  inputValidation: '/validation',
-  cookieExpiry: '/cookie-expiry',
-};
-
 // ! 비밀번호 해쉬화 > 데이터베이스 저장할때 자동으로 되도록, 꺼내올때 자동으로 되도록 MODEL에 hook 연결하기
 
 /** @프로필 수정 */
 router.post(
-  API.update,
+  '/update',
   isLogined,
   valid.isValidationOk,
   profileInspactor,
@@ -69,7 +59,7 @@ router.post(
 );
 
 /** @로그인 */
-router.post(API.login, async (req, res, next) => {
+router.post('/sign-in', async (req, res, next) => {
   try {
     console.log(req.body);
     if (!req.body.userId || !req.body.password)
@@ -92,21 +82,29 @@ router.post(API.login, async (req, res, next) => {
     }
     if (matchedUser.length === 0)
       return res.status(400).json({ message: 'notMatchingPassword' });
+    /*
+     * 수정 코드 작성
+     */
+    const loginUser = await User.findOne({
+      where: {
+        [Op.or]: [
+          { email: req.body.userId },
+          { userName: req.body.userId },
+          { phoneNumber: req.body.userId },
+        ],
+      },
+      attributes: { exclude: ['password', 'createdAt', 'deletedAt'] },
+    });
+    console.log({ loginUser });
+    /**
+     * 여기까지
+     */
     const user = matchedUser[0]; // 여러명일 수 있는가...
     const token = jwt.create(user.id);
     res.cookie(COOKIE, token, defaultOption);
     return res.status(200).json({
       message: 'success',
-      user: {
-        id: user.id,
-        userName: user.userName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        fullName: user.fullName,
-        imageUrl: user.imageUrl,
-        content: user.content,
-        secretMode: user.secretMode,
-      },
+      user: loginUser,
       token,
     });
   } catch (error) {
@@ -115,7 +113,7 @@ router.post(API.login, async (req, res, next) => {
 });
 
 /** @회원가입 */
-router.post(API.signup, isNotLogined, async (req, res, next) => {
+router.post('/sign-up', isNotLogined, async (req, res, next) => {
   try {
     if (
       !req.body ||
@@ -165,7 +163,7 @@ router.post(API.signup, isNotLogined, async (req, res, next) => {
 });
 
 /** @회원가입입력_유효성검사 input validator Api */
-router.post(API.inputValidation, async (req, res, next) => {
+router.post('/validation', async (req, res, next) => {
   try {
     const keyNameList = [
       'userName', // 유니크
@@ -204,7 +202,7 @@ router.post(API.inputValidation, async (req, res, next) => {
 });
 
 /** @쿠키삭제_로그아웃 */
-router.get(API.logout, isLogined, async (req, res, next) => {
+router.get('/log-out', isLogined, async (req, res, next) => {
   try {
     await User.update(
       { updatedAt: new Date() },
@@ -220,32 +218,15 @@ router.get(API.logout, isLogined, async (req, res, next) => {
 });
 
 /** @쿠키유저정보 */
-router.get(API.user, isLogined, async (req, res, next) => {
+router.get('/user', isLogined, async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { id: req.loginedUserId }, // 오브젝트
-      attributes: { exclude: ['password'] }, // 오브젝트
-      // include : [ // 배열
-      // { model : Feed, attributes : ['id',...] },
-      // { model : Follower, attributes : ['id] },
-      // { model : Following, attributes : [''id] },
-      // ... 인클루드 목록에 관계된 데이터 불러온다
-      // ]
-      // ....
+      attributes: {
+        exclude: ['password', 'createdAt', 'deletedAt', 'updatedAt'],
+      }, // 오브젝트
     });
-    return res.status(200).json({
-      message: 'success',
-      user: {
-        id: user.id,
-        userName: user.userName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        fullName: user.fullName,
-        imageUrl: user.imageUrl,
-        content: user.content,
-        secretMode: user.secretMode,
-      },
-    });
+    return res.status(200).json({ message: 'wip', user });
   } catch (error) {
     console.log('유저데이터 쿠키 토큰확인 에러', error);
     next();
@@ -253,12 +234,21 @@ router.get(API.user, isLogined, async (req, res, next) => {
 });
 
 /** @쿠키_만료연장 */
-router.get(API.cookieExpiry, isLogined, (req, res) => {
+router.get('/cookie-expiry', isLogined, (req, res) => {
   try {
     res.cookie(COOKIE_EXPIRY, req.loginedUserId, {
       expires: new Date(Date.now() + 1 * 1000 * 60 * 60),
     });
     return res.status(200).json({ message: 'success' });
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+});
+
+/** @마이페이지 유저정보 */
+router.get('/mypage/:userName', isLogined, (req, res, next) => {
+  try {
   } catch (error) {
     console.log(error);
     next();
