@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   Image.init(
     {
       url: { type: DataTypes.STRING(), allowNull: false },
+      category: {
+        type: DataTypes.ENUM(['photo', 'video']),
+        allowNull: false,
+        defaultValue: 'photo',
+      },
     },
     {
       sequelize,

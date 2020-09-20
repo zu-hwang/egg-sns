@@ -1,30 +1,70 @@
 import * as React from 'react';
 import * as css from 'styles/theme';
+import * as redux from 'src/hooks/customRedux';
+import * as account from 'store/account';
+import * as egg from 'store/types';
 import styled from 'styled-components';
 import Avatar from 'src/components/ui/Avatar';
 import UserNameBox from 'src/components/ui/UserNameBox';
+import { IRecommand } from 'store/types';
 
-const UserList = [{}, {}, {}, {}, {}];
+// const UserList = [{}, {}, {}, {}, {}];
 
 const RecommandList: React.FC = () => {
+  const dispatch = redux.useDispatch();
+  const recommandList = redux.useSelector((s) => s.account.recommandList);
+  const contentMap = React.useCallback(
+    (recommandUser: egg.IRecommand): string => {
+      // const random = (max: number): number => {
+      //   return Math.floor(Math.random() * max);
+      // };
+      if (recommandUser.type === 'New') return 'Instagram 신규 가입';
+      if (recommandUser.type === 'Random')
+        return `회원님을 위한 추천 회원입니다`;
+      if (recommandUser.type === 'Follower') return `회원님을 팔로우합니다`;
+      if (recommandUser.type === 'Target' && recommandUser.xFriend) {
+        console.log(recommandUser.xFriend.length);
+        if (recommandUser.xFriend.length === 1)
+          return `${recommandUser.xFriend[0]}님이 팔로우합니다`;
+        if (recommandUser.xFriend.length > 1)
+          return `${recommandUser.xFriend[0]}님 외 ${
+            recommandUser.xFriend.length - 1
+          }명이 팔로우합니다`;
+      }
+      return '';
+    },
+    [recommandList],
+  );
+  const onClickRelationBtn = (e) => {
+    const targetId = parseInt(e.target.dataset.relationid, 10);
+    let followStatus = false;
+    recommandList.forEach((RCMUser) => {
+      RCMUser.id === targetId &&
+        (followStatus = RCMUser.followStatus ? RCMUser.followStatus : false);
+    });
+    if (followStatus) dispatch(account.requestUnFollow(targetId));
+    if (!followStatus) dispatch(account.requestFollow(targetId));
+  };
   return (
     <Container>
       <Header>
-        <span>최근 스토리</span>
+        <span>회원님을 위한 추천</span>
         <button>모두 보기</button>
       </Header>
       <List>
-        {UserList.map((user, index) => {
+        {(recommandList as IRecommand[]).map((user, index) => {
           return (
-            <Li key={index}>
+            <Li key={user.id}>
               <div>
-                <Avatar size={'small'} />
+                <Avatar url={user.imageUrl} size={'small'} />
                 <UserNameBox
-                  username={'dal.dal_cake'}
-                  content={`yeomida_sewingstudio님 외 1명이 팔로우합니다`}
+                  username={user.userName}
+                  content={contentMap(user)}
                 />
               </div>
-              <FollowBtn>팔로우</FollowBtn>
+              <FollowBtn data-relationid={user.id} onClick={onClickRelationBtn}>
+                {user.followStatus ? '팔로잉' : '팔로우'}
+              </FollowBtn>
             </Li>
           );
         })}
@@ -50,7 +90,7 @@ const Header = styled.header`
   }
   button {
     ${css.fontBold}
-    font-size: 14px;
+    font-size:12px;
     border: none;
     background: transparent;
     padding: 0;
@@ -90,5 +130,8 @@ const FollowBtn = styled.button`
   ${css.fontBold}
   font-size:12px;
   color: ${({ theme }) => theme.blue};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export default RecommandList;

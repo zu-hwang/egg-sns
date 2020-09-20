@@ -2,14 +2,48 @@ import * as sagacore from '@redux-saga/core';
 import * as API from 'src/util/api';
 import * as egg from 'store/types';
 import * as account from 'store/account';
+import * as root from 'store/rootReducer';
 import * as effects from 'redux-saga/effects';
 
+function* fetchRecommand() {
+  try {
+    const result = yield effects.call(API.recommandUser);
+    yield effects.put(account.setRecommandList(result.data.recommandList));
+  } catch (error) {
+    console.log(error.response);
+  }
+}
+function* fetchFollow(action: {
+  type: typeof account.REQUEST_FOLLOW;
+  payload: number;
+}) {
+  try {
+    yield effects.put(account.setLoading(true));
+    yield effects.call(API.follow, action.payload);
+    yield effects.put(account.setFollowStatus(action.payload));
+  } catch (error) {
+    console.log(error.response);
+  } finally {
+    yield effects.put(account.setLoading(false));
+  }
+}
+function* fetchUnFollow(action: {
+  type: typeof account.REQUEST_UN_FOLLOW;
+  payload: number;
+}) {
+  try {
+    yield effects.put(account.setLoading(true));
+    yield effects.call(API.unFollow, action.payload);
+    yield effects.put(account.setFollowStatus(action.payload));
+  } catch (error) {
+    console.log(error.response);
+  } finally {
+    yield effects.put(account.setLoading(false));
+  }
+}
 function* fetchInputValid(action: egg.ReturnRequestInputValid) {
   try {
-    console.log('인풋 내용 검사 시작');
-    // ? 여기 인풋 검사 추가
     const result = yield effects.call(API.inputValidation, action.payload);
-    console.log('사가: 결과 message 출력>', result.data.message);
     const keyName = action.payload.keyName.toUpperCase();
     const newType = account.SET_VALID_MASSAGE_ + keyName;
     const newPayload = {
@@ -23,10 +57,8 @@ function* fetchInputValid(action: egg.ReturnRequestInputValid) {
 }
 function* fetchCookieExpiry(action: egg.ReturnRequestCookieExpiry) {
   try {
-    console.log('쿠키 만료시간 늘려서 저장해주세용!😘');
     yield effects.put(account.setLoading(true));
-    const result = yield effects.call(API.cookieExpiry);
-    console.log('쿠키저장 결과', { result });
+    yield effects.call(API.cookieExpiry);
     yield effects.delay(2 * 1000);
     yield effects.put(account.setLoading(false));
   } catch (error) {
@@ -36,10 +68,8 @@ function* fetchCookieExpiry(action: egg.ReturnRequestCookieExpiry) {
 }
 function* fetchUserData(action: egg.ReturnRequestUserData) {
   try {
-    console.log('사가 :유저데이터 업데이트');
     yield effects.put(account.setLoading(true));
     const result = yield effects.call(API.loadUserData);
-    console.log({ result });
     if (result.data && result.data.user) {
       yield effects.put(account.updateUserData(result.data.user));
     }
@@ -50,12 +80,22 @@ function* fetchUserData(action: egg.ReturnRequestUserData) {
   }
 }
 
+function* fetchLogOut(action: egg.ReturnRequestLogOut) {
+  try {
+    yield effects.put(account.setLoading(true));
+    const result = yield effects.call(API.logOut);
+    if (result.status === 200) {
+      yield effects.put(root.resetRootState());
+    }
+  } catch (error) {
+    console.log(error.response);
+    yield effects.put(account.setLoading(false));
+  }
+}
 function* fetchLogIn(action: egg.ReturnRequestLogIn) {
   try {
-    console.log('리덕스 사가 : 로그인 리퀘스트 시작!');
     yield effects.put(account.setLoading(true));
     const result = yield effects.call(API.logIn, action.payload);
-    console.log('사가 : 로그인 결과 :', result.data.user);
     yield effects.put(account.updateUserData(result.data.user));
     yield effects.put(account.successLogIn());
     yield effects.put(account.setLoading(false));
@@ -76,7 +116,6 @@ function* fetchLogIn(action: egg.ReturnRequestLogIn) {
           message: error.message,
         }),
       );
-    // 2. 로딩 완료로 변경
     yield effects.put(account.setLoading(false));
   }
 }
@@ -84,14 +123,10 @@ function* fetchLogIn(action: egg.ReturnRequestLogIn) {
 function* fetchSignUp(action: egg.ReturnRequestSignUp) {
   try {
     yield effects.put(account.setLoading(true));
-    const result = yield effects.call(API.signUp, action.payload);
-    // 상태코드 200-300 일때
-
-    console.log(typeof result, '결과', result);
+    /* const result =  */ yield effects.call(API.signUp, action.payload);
     yield effects.put(account.successSignUp());
     yield effects.put(account.setLoading(false));
   } catch (error) {
-    console.log(error.response);
     if (error.response) {
       console.dir(error.response);
       yield effects.put(
@@ -105,16 +140,27 @@ function* fetchSignUp(action: egg.ReturnRequestSignUp) {
       yield effects.put(
         account.setSignUpError({ code: 500, message: error.message }),
       );
-    // 2. 로딩 완료로 변경
     yield effects.put(account.setLoading(false));
   }
 }
 
+function* watchReqeustRecommand() {
+  yield effects.takeLatest(account.REQUEST_RECOMMAND, fetchRecommand);
+}
+function* watchReqeustFollow() {
+  yield effects.takeLatest(account.REQUEST_FOLLOW, fetchFollow);
+}
+function* watchReqeustUnFollow() {
+  yield effects.takeLatest(account.REQUEST_UN_FOLLOW, fetchUnFollow);
+}
 function* watchRequestUserData() {
   yield effects.takeLatest(account.REQUEST_USER_DATA, fetchUserData);
 }
 function* watchReqeustLogIn() {
   yield effects.takeLatest(account.REQUEST_LOG_IN, fetchLogIn);
+}
+function* watchReqeustLogOut() {
+  yield effects.takeLatest(account.REQUEST_LOG_OUT, fetchLogOut);
 }
 function* watchRequestSignUp() {
   yield effects.takeLatest(account.REQUEST_SIGN_UP, fetchSignUp);
@@ -137,9 +183,13 @@ export default function* eggSaga(): sagacore.SagaIterator {
   yield effects.all([
     effects.fork(watchRequestSignUp),
     effects.fork(watchReqeustLogIn),
+    effects.fork(watchReqeustLogOut),
     effects.fork(watchRequestUserData),
     effects.fork(watchSetCookieExpriry),
     effects.fork(watchReqeustInputValid),
+    effects.fork(watchReqeustFollow),
+    effects.fork(watchReqeustUnFollow),
+    effects.fork(watchReqeustRecommand),
   ]);
 }
 

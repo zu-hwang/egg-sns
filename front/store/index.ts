@@ -8,7 +8,6 @@ import createSagaMiddleware from 'redux-saga';
 
 const configureStore: MakeStore<egg.StoreState> = (context: Context) => {
   // ! context에는 req:IncomingMessage, res:ServerResponse, query 있음
-  console.log('스토어 index.ts 콘텍스트 확인하장~!', context);
   // 1. 사가 미들웨어 생성 & 미들웨어 목록 작성
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];

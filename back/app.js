@@ -15,6 +15,8 @@ const feedRouter = require('./routes/feed');
 const uploadRouter = require('./routes/upload');
 const feedsRouter = require('./routes/feeds');
 const relationRouter = require('./routes/relation');
+const commentRouter = require('./routes/comment');
+const likeRouter = require('./routes/like');
 
 dotenv.config();
 const app = express();
@@ -62,10 +64,12 @@ app.get('/', (req, res) => {
 
 // 라우터 연결
 app.use('/account', accountRouter);
-app.use('/feed', feedRouter);
+app.use('/feed', feedRouter); // 피드추가/생성/삭제
 app.use('/upload', uploadRouter);
-app.use('/feeds', feedsRouter);
+app.use('/feeds', feedsRouter); // 피드목록
 app.use('/relation', relationRouter);
+app.use('/comment', commentRouter);
+app.use('/like', likeRouter);
 
 // 에러 핸들러
 app.use(errorHandler);

@@ -57,6 +57,10 @@ class MyDocument extends Document {
             href='https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;500;900&family=Roboto:wght@100;400;500;900&display=swap'
             rel='stylesheet'
           />
+          <link // 파비콘 400 에러 임시해결 -> 프로덕션 설정에서 지우기
+            rel='shortcut icon'
+            href='data:image/x-icon;,'
+            type='image/x-icon'></link>
         </Head>
         <body>
           <Main />

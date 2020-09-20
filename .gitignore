@@ -34,6 +34,7 @@ etc
 
 # backend  -------------------------------------------
 uploads
+uploads/default
 .env
 back/doc
 back/md

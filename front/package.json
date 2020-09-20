@@ -12,6 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-regular-svg-icons": "^5.14.0",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "@svgr/webpack": "^5.4.0",
     "antd": "^4.5.4",
     "axios": "^0.19.2",
@@ -19,6 +23,7 @@
     "babel-loader": "^8.1.0",
     "file-loader": "^6.0.0",
     "immer": "^7.0.7",
+    "moment": "^2.28.0",
     "next": "^9.5.1",
     "next-images": "^1.4.1",
     "next-redux-saga": "^4.1.2",
@@ -43,6 +48,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/styled-components": "^5.1.2",
     "babel-plugin-styled-components": "^1.11.1",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "styled-reset": "^4.2.1",
     "typescript": "^3.9.7"
   }

@@ -30,7 +30,7 @@ const isLogined = async (req, res, next) => {
       return res.status(400).json({ message: 'emptyCookie' });
     }
   } catch (error) {
-    console.log(error);
+    console.log('isLogined 미들웨어 에러', error);
     next();
   }
 };
@@ -41,7 +41,7 @@ const isNotLogined = (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log(error);
+    console.log('isNotLogined 미들웨어 에러', error);
     return res.status(400).json({ message: '로그인이 필요합니다' });
   }
 };

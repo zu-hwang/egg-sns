@@ -3,11 +3,18 @@ import * as saga from 'redux-saga';
 import * as account from 'store/account';
 import * as store from 'store';
 import * as next from 'next';
+import * as route from 'next/router';
+import * as redux from 'src/hooks/customRedux';
 import API from 'src/util/api';
 import Layout from 'src/layout';
 import OneTap from 'src/components/account/OneTap';
 
 const OneTapPage: React.FC = () => {
+  const router = route.useRouter();
+  const user = redux.useSelector((s) => s.account.user);
+  React.useEffect(() => {
+    if (!user) router.push('/'); // 로그인 정보 날라가면 새로고침
+  }, [user]);
   return (
     <Layout>
       <OneTap></OneTap>

@@ -27,35 +27,28 @@ const OneTap: React.FC = () => {
   }, []);
 
   return (
-    <Container>
-      <CenterBox>
-        <IconKeyHole />
-        <Title>로그인 정보를 저장하시겠어요?</Title>
-        <SubTitle>
-          다음에 다시 입력할 필요가 없도록 이 브라우저에 로그인 정보가
-          저장됩니다.
-        </SubTitle>
-        <BlueBtn onClick={onClickSaveBtn}>
-          {isLoading ? <antd.LoadingOutlined /> : '정보 저장'}
-        </BlueBtn>
-        <BlueBtn onClick={onClickNextBtn} invert={true}>
-          나중에 하기
-        </BlueBtn>
-      </CenterBox>
-    </Container>
+    <CenterBox>
+      <IconKeyHole />
+      <Title>로그인 정보를 저장하시겠어요?</Title>
+      <SubTitle>
+        다음에 다시 입력할 필요가 없도록 이 브라우저에 로그인 정보가 저장됩니다.
+      </SubTitle>
+      <BlueBtn onClick={onClickSaveBtn}>
+        {isLoading ? <antd.LoadingOutlined /> : '정보 저장'}
+      </BlueBtn>
+      <BlueBtn onClick={onClickNextBtn} invert={true}>
+        나중에 하기
+      </BlueBtn>
+    </CenterBox>
   );
 };
 
-const Container = styled.section`
-  ${css.flexCenter}
-  width: 100%;
-  padding-bottom: 40px;
-`;
 const CenterBox = styled.div`
   ${css.flexCenter}
   flex-direction:column;
   width: 350px;
   padding: 30px 40px 20px;
+  margin-top: 30%;
   border: 1px solid ${({ theme }) => theme.border};
   background-color: ${({ theme }) => theme.mainBackground};
 `;

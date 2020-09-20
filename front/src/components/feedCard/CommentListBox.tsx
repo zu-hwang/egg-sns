@@ -1,45 +1,74 @@
 import * as React from 'react';
 import * as css from 'styles/theme';
+import * as egg from 'store/types';
+// import * as antd from '@ant-design/icons';
+import * as redux from 'src/hooks/customRedux';
+import * as feed from 'store/feed';
+// import * as moment from 'moment';
 import styled from 'styled-components';
-import heart from 'public/static/images/svg/heart.svg';
+import CommentLine from 'src/components/feedCard/CommentLine';
 
 interface CommentListBoxProps {
-  author: string;
-  content: string;
-  comments: any; // 코멘트 타입 설정 다시하기
-  likes: number;
+  comments: egg.IComment[] | [];
+  feedId: number;
 }
 const CommentListBox: React.FC<CommentListBoxProps> = ({
-  author,
-  content,
   comments,
-  likes,
+  feedId,
 }) => {
+  const dispatch = redux.useDispatch();
+  // const selectedCommentId = redux.useSelector((s) => s.feed.selectedCommentId);
+  const onClickMoreCommentBtn = () => {
+    // 피드 상세 보기 모달 띄우기
+  };
+  const onClickEditBtn = (e) => {
+    const commentId = parseInt(
+      e.target.dataset.comid ||
+        e.target.parentNode.dataset.comid ||
+        e.target.parentNode.parentNode.dataset.comid ||
+        e.target.parentNode.parentNode.parentNode.dataset.comid,
+      10,
+    );
+    console.log(commentId);
+    commentId && dispatch(feed.setCommentIdForUD(commentId));
+  };
+  const onClickDeleteBtn = (e) => {
+    const commentId = parseInt(
+      e.target.dataset.comid ||
+        e.target.parentNode.dataset.comid ||
+        e.target.parentNode.parentNode.dataset.comid ||
+        e.target.parentNode.parentNode.parentNode.dataset.comid,
+      10,
+    );
+    console.log(commentId, e.target);
+    dispatch(feed.setCommentIdForDEL(commentId));
+    dispatch(feed.requestDeleteComment({ feedId, commentId }));
+  };
+
   return (
     <ContentBox>
-      <LikeCount>좋아요 22개</LikeCount>
-      <CommentBox>
-        <Author>
-          <span>{author}</span>
-          <span>{content}</span>
-          <MoreButton>더보기</MoreButton>
-        </Author>
-        <MoreButton>댓글 {likes}개 모두 보기</MoreButton>
-        {comments.map((comment, index) => {
-          return (
-            <Comment key={index}>
-              <div>
-                <span>{comment.author}</span>
-                <span>{comment.content}</span>
-              </div>
-              <div>
-                <Icon src={heart} />
-              </div>
-            </Comment>
-          );
+      {comments?.length > 2 && (
+        <Wrapper>
+          <MoreButton>
+            댓글 {comments.length}개
+            <span onClick={onClickMoreCommentBtn}>모두 보기</span>
+          </MoreButton>
+        </Wrapper>
+      )}
+      {comments &&
+        (comments as egg.IComment[]).map((comment, index) => {
+          if (index < 2) {
+            return (
+              <CommentLine
+                key={comment.id}
+                comment={comment}
+                onClickEditBtn={onClickEditBtn}
+                onClickDeleteBtn={onClickDeleteBtn}
+              />
+            );
+          }
+          return null;
         })}
-      </CommentBox>
-      <LatestTimer>6시간 전</LatestTimer>
     </ContentBox>
   );
 };
@@ -47,57 +76,28 @@ const CommentListBox: React.FC<CommentListBoxProps> = ({
 const ContentBox = styled.div`
   ${css.font}font-size: 14px;
   border-bottom: 1px solid ${(props) => props.theme.divider};
-`;
-const LikeCount = styled.p`
-  ${css.fontBold}
-  font-size: 14px;
-  font-weight: 500;
-  padding: 5px 16px;
-`;
-const CommentBox = styled.div``;
-const Author = styled.div`
-  padding: 5px 16px;
-  span:first-child {
-    ${css.fontBold}
-    font-size:15px;
-    margin-right: 5px;
-  }
-`;
-const MoreButton = styled.button`
-  ${css.font}
-  font-size: 14px;
-  /* padding: 5px 16px; */
-  border: none;
-  background: transparent;
-  margin-left: 10px;
-  color: ${(props) => props.theme.secondaryText};
-`;
-const Comment = styled.div`
-  padding: 5px 16px;
-  ${css.flexCenter}
-  justify-content:space-between;
-  div {
-    ${css.flexCenter}
-    span:first-child {
-      ${css.fontBold}
-      font-size:15px;
-      margin-right: 5px;
-    }
-  }
-`;
-const LatestTimer = styled.p`
-  ${css.font}
-  font-size: 10px;
-  padding: 5px 16px;
-  color: ${(props) => props.theme.secondaryText};
+  padding-bottom: 10px;
 `;
 
-const Icon = styled.img`
-  height: ${3 * css.unit + 'px'};
-  width: ${3 * css.unit + 'px'};
-  margin-right: 25px;
-  &:last-child {
-    margin-right: 0;
-  }
+const MoreButton = styled.span<{ dot?: boolean }>`
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  color: ${({ theme }) => theme.secondaryText};
+  cursor: pointer;
+  ${({ dot }) => {
+    if (dot) {
+      return `
+      &:before {
+        content: '...';
+      }`;
+    } else {
+      return ``;
+    }
+  }}
+`;
+
+const Wrapper = styled.div`
+  margin: 8px 16px;
 `;
 export default CommentListBox;
