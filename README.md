@@ -1,3 +1,5 @@
+<img src=https://i.ibb.co/pPwZRZ9/instagram-snap.jpg width='640' height='360' alt='인스타그램클론스냅샷'/>
+
 # egg-sns
 egg-sns는 **eungeegee-sns**의 약자이며 (홀로 북치고 장구치며 백/프론트엔드를 기능을 구현한..) 인스타그램 클론 프로젝트입니다.
 2020.08.18 이후 현재까지, 야금야금 작성 중 입니다.
